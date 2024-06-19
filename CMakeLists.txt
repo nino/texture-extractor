@@ -18,7 +18,7 @@ add_compile_options(-Wall -Wextra -Wpedantic)
 set(TS_FILES texture_extractor_en_US.ts)
 
 set(PROJECT_SOURCES
-        main.cpp
+        src/main.cpp
 
 
 
@@ -29,8 +29,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(texture_extractor
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        mainwindow.h mainwindow.cpp
-        documentwindow.h documentwindow.cpp
+        src/mainwindow.h src/mainwindow.cpp
+        src/documentwindow.h src/documentwindow.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET texture_extractor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

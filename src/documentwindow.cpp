@@ -5,8 +5,7 @@
 #include <QVBoxLayout>
 
 DocumentWindow::DocumentWindow(QMainWindow* parent) : QMainWindow{parent} {
-    setAttribute(Qt::WA_DeleteOnClose); // Ensure window is deleted when closed
-    // Setup your document window here
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle("New Document");
 }
 
