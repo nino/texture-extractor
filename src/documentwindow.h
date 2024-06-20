@@ -15,6 +15,10 @@ class PhotoView : public QWidget {
   public slots:
     void show_image(QString path);
 
+  private slots:
+    void zoom_in();
+    void zoom_out();
+
   private:
     QGraphicsView* graphics;
 };

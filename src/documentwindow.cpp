@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <QLabel>
 #include <QMainWindow>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
@@ -11,6 +12,14 @@ PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
     graphics = new QGraphicsView(this);
     layout->addWidget(lab1);
     layout->addWidget(graphics);
+
+    QPushButton* zoom_in_button = new QPushButton("+", this);
+    QPushButton* zoom_out_button = new QPushButton("−", this);
+    connect(zoom_in_button, &QPushButton::clicked, this, &PhotoView::zoom_in);
+    connect(zoom_out_button, &QPushButton::clicked, this, &PhotoView::zoom_out);
+
+    layout->addWidget(zoom_in_button);
+    layout->addWidget(zoom_out_button);
 
     QGraphicsScene* scene = new QGraphicsScene(graphics);
     graphics->setScene(scene);
@@ -24,10 +33,20 @@ void PhotoView::show_image(QString path) {
     QGraphicsScene* scene = graphics->scene();
     QImage img(path);
     if (!img.isNull()) {
-        QGraphicsPixmapItem* pixmap_item =
-            scene->addPixmap(QPixmap::fromImage(img));
-        scene->setSceneRect(pixmap_item->boundingRect());
+        QPixmap pixmap = QPixmap::fromImage(img);
+        QGraphicsPixmapItem* item = scene->addPixmap(pixmap);
+        item->setScale(0.1);
     }
+}
+
+void PhotoView::zoom_in() {
+    qDebug() << "zooming in";
+    graphics->scale(1.1, 1.1);
+}
+
+void PhotoView::zoom_out() {
+    qDebug() << "zooming out";
+    graphics->scale(0.9, 0.9);
 }
 
 DocumentWindow::DocumentWindow(QMainWindow* parent) : QMainWindow{parent} {
