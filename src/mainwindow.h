@@ -3,7 +3,6 @@
 
 #include <QGraphicsView>
 #include <QMainWindow>
-#include "documentwindow.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -14,7 +13,6 @@ class MainWindow : public QMainWindow {
   private:
     QMenu* fileMenu;
     QAction* openAction;
-    QList<DocumentWindow*>* documents;
 
   private slots:
     void open();

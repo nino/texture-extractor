@@ -9,8 +9,6 @@
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
-    documents = new QList<DocumentWindow*>();
-
     openAction = new QAction(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen),
                              tr("&Open"), this);
     openAction->setShortcuts(QKeySequence::Open);
@@ -22,7 +20,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
     fileMenu->addAction(openAction);
 }
 
-MainWindow::~MainWindow() { delete documents; }
+MainWindow::~MainWindow() {}
 
 void MainWindow::open() {
     QFileDialog dialog(this);
@@ -34,11 +32,8 @@ void MainWindow::open() {
         qDebug() << fileNames;
         for (auto fileName : fileNames) {
             DocumentWindow* doc = new DocumentWindow(this);
-            documents->append(doc);
             doc->set_document_title(fileName);
             doc->show();
-        }
-        for (auto doc : *documents) {
             qDebug() << doc->get_document_title();
         }
     }
