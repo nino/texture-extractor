@@ -9,18 +9,6 @@
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
-    /* QWidget *central = new QWidget(this); */
-    /* QLabel *lab = new QLabel("Hello", this); */
-    /* QPushButton *butt = new QPushButton("Click me", this); */
-    /* QGraphicsView *graphics = new QGraphicsView(this); */
-    /* QVBoxLayout *layout = new QVBoxLayout(this); */
-    /* layout->addWidget(lab); */
-    /* layout->addWidget(butt); */
-    /* layout->addWidget(graphics); */
-    /* central->setLayout(layout); */
-    /* this->setWindowTitle("what"); */
-    /* this->setCentralWidget(central); */
-
     documents = new QList<DocumentWindow*>();
 
     openAction = new QAction(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen),
@@ -38,7 +26,8 @@ MainWindow::~MainWindow() { delete documents; }
 
 void MainWindow::open() {
     QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setFileMode(QFileDialog::ExistingFiles);
+    dialog.setNameFilter("*.png *.jpg *.jpeg *.tif *.tiff");
     QStringList fileNames;
     if (dialog.exec()) {
         fileNames = dialog.selectedFiles();

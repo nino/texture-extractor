@@ -1,8 +1,23 @@
 #ifndef DOCUMENTWINDOW_H
 #define DOCUMENTWINDOW_H
 
+#include <QGraphicsView>
 #include <QImage>
 #include <QMainWindow>
+#include <QWidget>
+
+class PhotoView : public QWidget {
+    Q_OBJECT
+
+  public:
+    explicit PhotoView(QWidget* parent = nullptr);
+
+  public slots:
+    void show_image(QString path);
+
+  private:
+    QGraphicsView* graphics;
+};
 
 class DocumentWindow : public QMainWindow {
     Q_OBJECT
@@ -14,6 +29,7 @@ class DocumentWindow : public QMainWindow {
 
   private:
     QString document_title;
+    PhotoView* photo_view;
 
   signals:
 };
