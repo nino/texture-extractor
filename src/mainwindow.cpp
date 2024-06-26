@@ -5,8 +5,10 @@
 #include <QGraphicsView>
 #include <QLabel>
 #include <QMenuBar>
+#include <QMimeData>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QDragEnterEvent>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
     openAction = new QAction(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen),
@@ -18,11 +20,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addSeparator();
     fileMenu->addAction(openAction);
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::open() {
+void MainWindow::open() noexcept {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFiles);
     dialog.setNameFilter("*.png *.jpg *.jpeg *.tif *.tiff");
@@ -35,6 +38,31 @@ void MainWindow::open() {
             doc->set_document_title(fileName);
             doc->show();
             qDebug() << doc->get_document_title();
+        }
+    }
+}
+
+void MainWindow::openFile(const QString& fileName) noexcept {
+    DocumentWindow* doc = new DocumentWindow(this);
+    doc->set_document_title(fileName);
+    doc->show();
+    qDebug() << "Opened file:" << doc->get_document_title();
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
+    if (event->mimeData()->hasUrls()) {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent* event) {
+    const QMimeData* mimeData = event->mimeData();
+    if (mimeData->hasUrls()) {
+        QList<QUrl> urlList = mimeData->urls();
+        for (const QUrl& url : urlList) {
+            if (url.isLocalFile()) {
+                openFile(url.toLocalFile());
+            }
         }
     }
 }

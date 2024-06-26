@@ -10,6 +10,8 @@ PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
     QVBoxLayout* layout = new QVBoxLayout(this);
     QLabel* lab1 = new QLabel("hello", this);
     graphics = new QGraphicsView(this);
+    graphics->setDragMode(QGraphicsView::ScrollHandDrag);
+
     layout->addWidget(lab1);
     layout->addWidget(graphics);
 

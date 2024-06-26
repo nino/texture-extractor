@@ -19,9 +19,10 @@ set(TS_FILES texture_extractor_en_US.ts)
 
 set(PROJECT_SOURCES
         src/main.cpp
-
-
-
+        src/mainwindow.h
+        src/mainwindow.cpp
+        src/documentwindow.h
+        src/documentwindow.cpp
         ${TS_FILES}
 )
 
@@ -29,22 +30,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(texture_extractor
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        src/mainwindow.h src/mainwindow.cpp
-        src/documentwindow.h src/documentwindow.cpp
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET texture_extractor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()
     if(ANDROID)
         add_library(texture_extractor SHARED
             ${PROJECT_SOURCES}
         )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(texture_extractor
             ${PROJECT_SOURCES}
@@ -56,19 +48,28 @@ endif()
 
 target_link_libraries(texture_extractor PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.texture_extractor)
-endif()
+# Set application properties
 set_target_properties(texture_extractor PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
+# Add custom Info.plist for macOS
+if(APPLE)
+    set_target_properties(texture_extractor PROPERTIES
+        MACOSX_BUNDLE_GUI_IDENTIFIER com.ninoan.texture_extractor
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    )
+    
+    # Copy and configure Info.plist
+    set(INFO_PLIST_IN "${CMAKE_SOURCE_DIR}/Info.plist.in")
+    set(INFO_PLIST_OUT "${CMAKE_BINARY_DIR}/Info.plist")
+    configure_file(${INFO_PLIST_IN} ${INFO_PLIST_OUT} @ONLY)
+    set_target_properties(texture_extractor PROPERTIES
+        MACOSX_BUNDLE_INFO_PLIST ${INFO_PLIST_OUT}
+    )
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS texture_extractor
