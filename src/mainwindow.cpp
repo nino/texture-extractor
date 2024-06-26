@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "documentwindow.h"
 #include <QDebug>
+#include <QDragEnterEvent>
 #include <QFileDialog>
 #include <QGraphicsView>
 #include <QLabel>
@@ -8,7 +9,6 @@
 #include <QMimeData>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QDragEnterEvent>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
     openAction = new QAction(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen),
