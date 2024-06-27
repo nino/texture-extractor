@@ -1,10 +1,37 @@
 #include "documentwindow.h"
 #include <QDebug>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsSceneDragDropEvent>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
 #include <QVBoxLayout>
+
+class MovableEllipse : public QGraphicsEllipseItem {
+  public:
+    explicit MovableEllipse(const QRectF& rect, QGraphicsItem* parent = nullptr)
+        : QGraphicsEllipseItem{rect, parent} {
+        setAcceptHoverEvents(true);
+        setAcceptedMouseButtons(Qt::AllButtons);
+    }
+
+  protected:
+    /* void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override { */
+    /*     qDebug() << "hello" << event; */
+    /* } */
+
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override {
+        qDebug() << "clicky down";
+    }
+
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override {}
+
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override {
+        auto origin = event->lastScenePos();
+        auto pos = event->scenePos();
+        setPos(this->pos() + pos - origin);
+    }
+};
 
 PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -25,8 +52,10 @@ PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
 
     QGraphicsScene* scene = new QGraphicsScene(graphics);
     graphics->setScene(scene);
-    QRect rect(10, 10, 20, 20);
-    scene->addEllipse(rect);
+    auto rect = QRect(10, 10, 20, 20);
+    auto ellipse = new MovableEllipse(rect, nullptr);
+    scene->addItem(ellipse);
+    ellipse->setZValue(1.0);
 
     setLayout(layout);
 }
