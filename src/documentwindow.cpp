@@ -13,23 +13,35 @@ class MovableEllipse : public QGraphicsEllipseItem {
         : QGraphicsEllipseItem{rect, parent} {
         setAcceptHoverEvents(true);
         setAcceptedMouseButtons(Qt::AllButtons);
+        setCursor(Qt::OpenHandCursor);
     }
 
   protected:
-    /* void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override { */
-    /*     qDebug() << "hello" << event; */
-    /* } */
-
-    void mousePressEvent(QGraphicsSceneMouseEvent* event) override {
-        qDebug() << "clicky down";
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override {
+        setCursor(Qt::OpenHandCursor);
+        QGraphicsEllipseItem::hoverEnterEvent(event);
     }
 
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override {}
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override {
+        setCursor(Qt::ArrowCursor);
+        QGraphicsEllipseItem::hoverLeaveEvent(event);
+    }
+
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override {
+        setCursor(Qt::ClosedHandCursor);
+        QGraphicsEllipseItem::mousePressEvent(event);
+    }
+
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override {
+        setCursor(Qt::OpenHandCursor);
+        QGraphicsEllipseItem::mouseReleaseEvent(event);
+    }
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override {
         auto origin = event->lastScenePos();
-        auto pos = event->scenePos();
-        setPos(this->pos() + pos - origin);
+        auto event_pos = event->scenePos();
+        setPos(this->pos() + event_pos - origin);
+        QGraphicsEllipseItem::mouseMoveEvent(event);
     }
 };
 
@@ -37,7 +49,7 @@ PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
     QVBoxLayout* layout = new QVBoxLayout(this);
     QLabel* lab1 = new QLabel("hello", this);
     graphics = new QGraphicsView(this);
-    graphics->setDragMode(QGraphicsView::ScrollHandDrag);
+    /* graphics->setDragMode(QGraphicsView::ScrollHandDrag); */
 
     layout->addWidget(lab1);
     layout->addWidget(graphics);
