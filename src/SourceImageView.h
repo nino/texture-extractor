@@ -13,7 +13,6 @@ class SourceImageView : public QGraphicsView {
     explicit SourceImageView(QWidget* parent = nullptr);
 
   protected:
-    /* void mouseMoveEvent(QMouseEvent* event) override; */
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
