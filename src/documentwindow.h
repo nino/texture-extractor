@@ -1,6 +1,7 @@
 #ifndef DOCUMENTWINDOW_H
 #define DOCUMENTWINDOW_H
 
+#include "SourceImageView.h"
 #include <QGraphicsView>
 #include <QImage>
 #include <QMainWindow>
@@ -20,7 +21,7 @@ class PhotoView : public QWidget {
     void zoom_out();
 
   private:
-    QGraphicsView* graphics;
+    SourceImageView* graphics;
 };
 
 class DocumentWindow : public QMainWindow {

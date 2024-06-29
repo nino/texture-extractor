@@ -23,6 +23,8 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/documentwindow.h
         src/documentwindow.cpp
+        src/SourceImageView.h
+        src/SourceImageView.cpp
         ${TS_FILES}
 )
 

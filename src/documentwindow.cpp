@@ -17,38 +17,33 @@ class MovableEllipse : public QGraphicsEllipseItem {
     }
 
   protected:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override {
+    void hoverEnterEvent(QGraphicsSceneHoverEvent*) override {
         setCursor(Qt::OpenHandCursor);
-        QGraphicsEllipseItem::hoverEnterEvent(event);
     }
 
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override {
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override {
         setCursor(Qt::ArrowCursor);
-        QGraphicsEllipseItem::hoverLeaveEvent(event);
     }
 
-    void mousePressEvent(QGraphicsSceneMouseEvent* event) override {
+    void mousePressEvent(QGraphicsSceneMouseEvent*) override {
         setCursor(Qt::ClosedHandCursor);
-        QGraphicsEllipseItem::mousePressEvent(event);
     }
 
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override {
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override {
         setCursor(Qt::OpenHandCursor);
-        QGraphicsEllipseItem::mouseReleaseEvent(event);
     }
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override {
         auto origin = event->lastScenePos();
         auto event_pos = event->scenePos();
         setPos(this->pos() + event_pos - origin);
-        QGraphicsEllipseItem::mouseMoveEvent(event);
     }
 };
 
 PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
     QVBoxLayout* layout = new QVBoxLayout(this);
     QLabel* lab1 = new QLabel("hello", this);
-    graphics = new QGraphicsView(this);
+    graphics = new SourceImageView(this);
     /* graphics->setDragMode(QGraphicsView::ScrollHandDrag); */
 
     layout->addWidget(lab1);
