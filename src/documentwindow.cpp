@@ -1,11 +1,15 @@
 #include "documentwindow.h"
+#include "EditableRectItem.h"
+#include "ExtractedView.h"
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneDragDropEvent>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
-#include <QVBoxLayout>
+
+using EditableRectItem = ninoan::texture_extractor::EditableRectItem;
 
 class MovableEllipse : public QGraphicsEllipseItem {
   public:
@@ -40,22 +44,14 @@ class MovableEllipse : public QGraphicsEllipseItem {
     }
 };
 
-PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    QLabel* lab1 = new QLabel("hello", this);
+PhotoView::PhotoView(QString const& file_path, QWidget* parent)
+    : QWidget{parent}, image(QImage(file_path)) {
+    QHBoxLayout* layout = new QHBoxLayout(this);
     graphics = new SourceImageView(this);
-    /* graphics->setDragMode(QGraphicsView::ScrollHandDrag); */
+    extracted_view = new ExtractedView(this);
 
-    layout->addWidget(lab1);
+    layout->addWidget(extracted_view);
     layout->addWidget(graphics);
-
-    QPushButton* zoom_in_button = new QPushButton("+", this);
-    QPushButton* zoom_out_button = new QPushButton("−", this);
-    connect(zoom_in_button, &QPushButton::clicked, this, &PhotoView::zoom_in);
-    connect(zoom_out_button, &QPushButton::clicked, this, &PhotoView::zoom_out);
-
-    layout->addWidget(zoom_in_button);
-    layout->addWidget(zoom_out_button);
 
     QGraphicsScene* scene = new QGraphicsScene(graphics);
     graphics->setScene(scene);
@@ -64,41 +60,39 @@ PhotoView::PhotoView(QWidget* parent) : QWidget{parent} {
     scene->addItem(ellipse);
     ellipse->setZValue(1.0);
 
+    auto editable_rect = new EditableRectItem(rect, nullptr);
+    scene->addItem(editable_rect);
+    editable_rect->setZValue(2.0);
+
     setLayout(layout);
+
+    show_image(file_path);
 }
 
 void PhotoView::show_image(QString path) {
     QGraphicsScene* scene = graphics->scene();
-    QImage img(path);
-    if (!img.isNull()) {
-        QPixmap pixmap = QPixmap::fromImage(img);
+    image = QImage(path);
+    if (!image.isNull()) {
+        QPixmap pixmap = QPixmap::fromImage(image);
         QGraphicsPixmapItem* item = scene->addPixmap(pixmap);
         item->setScale(0.1);
     }
 }
 
-void PhotoView::zoom_in() {
-    qDebug() << "zooming in";
-    graphics->scale(1.1, 1.1);
-}
-
-void PhotoView::zoom_out() {
-    qDebug() << "zooming out";
-    graphics->scale(0.9, 0.9);
-}
-
 DocumentWindow::DocumentWindow(QMainWindow* parent) : QMainWindow{parent} {
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle("New Document");
-    photo_view = new PhotoView(this);
-    this->setCentralWidget(photo_view);
+    auto loading_label = new QLabel("Loading...", this);
+    this->setCentralWidget(loading_label);
 }
 
 void DocumentWindow::set_document_title(const QString& new_title) {
     qDebug() << "The new window title is " << new_title << "\n";
     document_title = new_title;
     this->setWindowTitle(new_title);
-    photo_view->show_image(new_title);
+    photo_view = new PhotoView(new_title, this);
+    this->setCentralWidget(photo_view);
+    /* photo_view->show_image(new_title); */
 }
 
 QString DocumentWindow::get_document_title() { return document_title; }

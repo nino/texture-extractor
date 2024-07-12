@@ -54,6 +54,6 @@ void SourceImageView::wheelEvent(QWheelEvent* event) {
     qDebug() << event->pixelDelta();
     auto pixel_delta = event->pixelDelta().y() * 0.01;
     auto sign = pixel_delta >= 0 ? 1 : -1;
-    auto delta = 1.0 + sign * std::sqrt(std::abs(pixel_delta));
+    auto delta = std::abs(1.0 + sign * std::sqrt(std::abs(pixel_delta)));
     scale(delta, delta);
 }

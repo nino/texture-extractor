@@ -1,6 +1,7 @@
 #ifndef DOCUMENTWINDOW_H
 #define DOCUMENTWINDOW_H
 
+#include "ExtractedView.h"
 #include "SourceImageView.h"
 #include <QGraphicsView>
 #include <QImage>
@@ -11,17 +12,19 @@ class PhotoView : public QWidget {
     Q_OBJECT
 
   public:
-    explicit PhotoView(QWidget* parent = nullptr);
+    explicit PhotoView(QString const& file_path, QWidget* parent = nullptr);
 
   public slots:
-    void show_image(QString path);
 
   private slots:
-    void zoom_in();
-    void zoom_out();
 
   private:
     SourceImageView* graphics;
+    ExtractedView* extracted_view;
+
+    QImage image;
+
+    void show_image(QString path);
 };
 
 class DocumentWindow : public QMainWindow {

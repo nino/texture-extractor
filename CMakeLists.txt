@@ -25,6 +25,10 @@ set(PROJECT_SOURCES
         src/documentwindow.cpp
         src/SourceImageView.h
         src/SourceImageView.cpp
+        src/EditableRectItem.h
+        src/EditableRectItem.cpp
+        src/ExtractedView.h
+        src/ExtractedView.cpp
         ${TS_FILES}
 )
 
