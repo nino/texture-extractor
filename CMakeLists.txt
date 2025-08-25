@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project(texture_extractor VERSION 0.1 LANGUAGES CXX)
 
@@ -67,7 +67,7 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
         MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     )
-    
+
     # Copy and configure Info.plist
     set(INFO_PLIST_IN "${CMAKE_SOURCE_DIR}/Info.plist.in")
     set(INFO_PLIST_OUT "${CMAKE_BINARY_DIR}/Info.plist")
