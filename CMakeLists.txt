@@ -9,16 +9,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Test)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Test)
 
 
 add_compile_options(-Wall -Wextra -Wpedantic)
 
 set(TS_FILES texture_extractor_en_US.ts)
 
-set(PROJECT_SOURCES
-        src/main.cpp
+# Library sources (without main.cpp for testability)
+set(LIBRARY_SOURCES
         src/mainwindow.h
         src/mainwindow.cpp
         src/documentwindow.h
@@ -29,6 +29,11 @@ set(PROJECT_SOURCES
         src/EditableRectItem.cpp
         src/ExtractedView.h
         src/ExtractedView.cpp
+)
+
+set(PROJECT_SOURCES
+        src/main.cpp
+        ${LIBRARY_SOURCES}
         ${TS_FILES}
 )
 
@@ -87,3 +92,14 @@ install(TARGETS texture_extractor
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(texture_extractor)
 endif()
+
+# Testing
+enable_testing()
+
+# Create a library for testing (without main.cpp)
+add_library(texture_extractor_lib STATIC ${LIBRARY_SOURCES})
+target_link_libraries(texture_extractor_lib PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+target_include_directories(texture_extractor_lib PUBLIC ${CMAKE_SOURCE_DIR}/src)
+
+# Add tests subdirectory
+add_subdirectory(tests)
