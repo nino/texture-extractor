@@ -238,17 +238,24 @@ void TestMainWindow::testDropEventWithLocalFile()
     urls << QUrl::fromLocalFile(testImagePath1);
     mimeData->setUrls(urls);
 
-    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
-                    Qt::LeftButton, Qt::NoModifier);
+    // First send drag enter event
+    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData,
+                              Qt::LeftButton, Qt::NoModifier);
+    QCoreApplication::sendEvent(mainWindow, &enterEvent);
+    QApplication::processEvents();
 
     // Count DocumentWindows before drop
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
-    // Send the event
+    // Now send the drop event
+    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
+                    Qt::LeftButton, Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &event);
 
     // Process events to allow window creation
-    QTest::qWait(100);
+    QApplication::processEvents();
+    QTest::qWait(200);
+    QApplication::processEvents();
 
     // Should have created a new DocumentWindow
     int afterCount = mainWindow->findChildren<DocumentWindow*>().size();
@@ -265,13 +272,23 @@ void TestMainWindow::testDropEventWithMultipleFiles()
     urls << QUrl::fromLocalFile(testImagePath2);
     mimeData->setUrls(urls);
 
-    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
-                    Qt::LeftButton, Qt::NoModifier);
+    // First send drag enter event
+    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData,
+                              Qt::LeftButton, Qt::NoModifier);
+    QCoreApplication::sendEvent(mainWindow, &enterEvent);
+    QApplication::processEvents();
 
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
+    // Now send drop event
+    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
+                    Qt::LeftButton, Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &event);
-    QTest::qWait(100);
+
+    // Process events to allow window creation
+    QApplication::processEvents();
+    QTest::qWait(200);
+    QApplication::processEvents();
 
     int afterCount = mainWindow->findChildren<DocumentWindow*>().size();
 

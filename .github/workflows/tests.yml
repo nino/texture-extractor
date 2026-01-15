@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Qt6 and dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          qt6-base-dev \
+          qt6-base-dev-tools \
+          libqt6test6 \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          xvfb \
+          libxkbcommon-x11-0 \
+          libxcb-icccm4 \
+          libxcb-image0 \
+          libxcb-keysyms1 \
+          libxcb-randr0 \
+          libxcb-render-util0 \
+          libxcb-xinerama0 \
+          libxcb-cursor0
+
+    - name: Configure CMake
+      run: cmake -Bbuild .
+
+    - name: Build
+      run: cmake --build build -j$(nproc)
+
+    - name: Run tests with virtual display
+      run: xvfb-run -a -s "-screen 0 1024x768x24" ctest --output-on-failure --test-dir build
+
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: build/Testing/Temporary/

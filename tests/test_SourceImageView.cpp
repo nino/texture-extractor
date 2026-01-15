@@ -277,25 +277,28 @@ void TestSourceImageView::testPanningWithContent()
     QImage testImage = TestHelpers::createTestImage(1000, 1000);
     scene->addPixmap(QPixmap::fromImage(testImage));
 
+    // Set scene rect to ensure scrollbars are available
+    scene->setSceneRect(0, 0, 1000, 1000);
+    view->setSceneRect(0, 0, 1000, 1000);
+
+    // Center the view at a specific position
+    view->centerOn(500, 500);
+    QApplication::processEvents();
+
     // Get initial view center
     QPointF initialCenter = view->mapToScene(view->viewport()->rect().center());
 
-    // Simulate right-click drag
+    // Simulate right-click drag with TestHelpers::simulateDrag
     QPoint startPos(400, 300);
     QPoint endPos(500, 400);
 
-    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton,
-                                    startPos, view->viewport()->mapToGlobal(startPos));
-    TestHelpers::simulateMouseMove(view->viewport(), endPos,
-                                   view->viewport()->mapToGlobal(endPos),
-                                   Qt::RightButton);
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton,
-                                      endPos, view->viewport()->mapToGlobal(endPos));
+    TestHelpers::simulateDrag(view->viewport(), Qt::RightButton, startPos, endPos);
 
     QPointF newCenter = view->mapToScene(view->viewport()->rect().center());
 
     // The view center should have moved (panned)
-    QVERIFY(!TestHelpers::pointFuzzyCompare(initialCenter, newCenter, 1.0));
+    // Use a larger tolerance to account for test environment variations
+    QVERIFY(!TestHelpers::pointFuzzyCompare(initialCenter, newCenter, 5.0));
 }
 
 QTEST_MAIN(TestSourceImageView)
