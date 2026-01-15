@@ -11,7 +11,7 @@
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
-    openAction = new QAction(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen),
+    openAction = new QAction(QIcon::fromTheme("document-open"),
                              tr("&Open"), this);
     openAction->setShortcuts(QKeySequence::Open);
     openAction->setStatusTip(tr("Open a file"));

@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QtMath>
 #include <QTemporaryFile>
+#include <QDir>
 
 namespace TestHelpers {
 

@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QTemporaryFile>
 #include <QFile>
+#include <QHBoxLayout>
 #include "documentwindow.h"
 #include "test_helpers.h"
 
