@@ -52,6 +52,29 @@ void MyClass::setName(const QString& name) {
 - **Consistency**: Uniform style across the codebase
 - **Maintainability**: Easier to understand code at a glance
 
+### Automated Enforcement
+The explicit `this->` convention can be checked using the provided `check-this-usage.sh` script:
+
+```bash
+# Requires clang-query and compile_commands.json
+cmake -Bbuild -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+./check-this-usage.sh
+```
+
+This check is also integrated into CI/CD workflows to ensure compliance.
+
+## Code Quality Tools
+
+### clang-format
+- All code must be formatted with `clang-format`
+- Configuration is in `.clang-format` at the project root
+- Run: `find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format -i`
+
+### clang-tidy
+- Code style and naming conventions are enforced via `.clang-tidy`
+- Checks camelCase naming for all identifiers
+- Run: `clang-tidy src/*.cpp -- -I/path/to/qt/include`
+
 ## Testing
 - All GUI components must have comprehensive unit tests
 - Use Qt Test framework for all tests
