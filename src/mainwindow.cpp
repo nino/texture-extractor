@@ -11,7 +11,8 @@
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
-    this->openAction = new QAction(QIcon::fromTheme("document-open"), tr("&Open"), this);
+    this->openAction =
+        new QAction(QIcon::fromTheme("document-open"), tr("&Open"), this);
     this->openAction->setShortcuts(QKeySequence::Open);
     this->openAction->setStatusTip(tr("Open a file"));
     connect(this->openAction, &QAction::triggered, this, &MainWindow::open);
@@ -22,8 +23,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
     this->setAcceptDrops(true);
 }
 
-MainWindow::~MainWindow() {
-}
+MainWindow::~MainWindow() {}
 
 void MainWindow::open() noexcept {
     QFileDialog dialog(this);

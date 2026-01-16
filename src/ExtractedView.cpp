@@ -1,4 +1,3 @@
 #include "ExtractedView.hpp"
 
-ExtractedView::ExtractedView(QWidget* parent) : QGraphicsView{parent} {
-}
+ExtractedView::ExtractedView(QWidget* parent) : QGraphicsView{parent} {}

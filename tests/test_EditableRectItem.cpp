@@ -1,12 +1,12 @@
-#include <QtTest/QtTest>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#include <QImage>
 #include "EditableRectItem.hpp"
 #include "test_helpers.hpp"
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsView>
+#include <QImage>
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
+#include <QtTest/QtTest>
 
 using namespace ninoan::texture_extractor;
 
@@ -103,8 +103,8 @@ void TestEditableRectItem::testConstruction() {
 
 void TestEditableRectItem::testConstructionWithDifferentSizes() {
     // Test various sizes
-    QList<QRectF> testRects = {QRectF(0, 0, 50, 50), QRectF(0, 0, 200, 150), QRectF(0, 0, 10, 500),
-                               QRectF(0, 0, 500, 10)};
+    QList<QRectF> testRects = {QRectF(0, 0, 50, 50), QRectF(0, 0, 200, 150),
+                               QRectF(0, 0, 10, 500), QRectF(0, 0, 500, 10)};
 
     for (const auto& rect : testRects) {
         EditableRectItem* testItem = new EditableRectItem(rect);
@@ -206,7 +206,8 @@ void TestEditableRectItem::simulateMousePress(const QPointF& pos) {
     scene->sendEvent(item, &pressEvent);
 }
 
-void TestEditableRectItem::simulateMouseMove(const QPointF& fromPos, const QPointF& toPos) {
+void TestEditableRectItem::simulateMouseMove(const QPointF& fromPos,
+                                             const QPointF& toPos) {
     QGraphicsSceneMouseEvent moveEvent(QEvent::GraphicsSceneMouseMove);
     moveEvent.setLastPos(fromPos);
     moveEvent.setPos(toPos);
@@ -349,7 +350,8 @@ void TestEditableRectItem::testResizePreservesOppositeCorner() {
 }
 
 void TestEditableRectItem::testNegativeSizeRect() {
-    // Test with a rect that has negative width/height (will be normalized by Qt)
+    // Test with a rect that has negative width/height (will be normalized by
+    // Qt)
     QRectF rect(100, 100, -50, -50);
     item = new EditableRectItem(rect.normalized());
     scene->addItem(item);

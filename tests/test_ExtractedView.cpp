@@ -1,8 +1,8 @@
-#include <QtTest/QtTest>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
 #include "ExtractedView.hpp"
 #include "test_helpers.hpp"
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QtTest/QtTest>
 
 class TestExtractedView : public QObject {
     Q_OBJECT
@@ -55,9 +55,7 @@ void TestExtractedView::cleanup() {
     scene = nullptr;
 }
 
-void TestExtractedView::testConstruction() {
-    QVERIFY(view != nullptr);
-}
+void TestExtractedView::testConstruction() { QVERIFY(view != nullptr); }
 
 void TestExtractedView::testConstructionWithParent() {
     QWidget parent;

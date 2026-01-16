@@ -1,11 +1,11 @@
-#include <QtTest/QtTest>
-#include <QMainWindow>
-#include <QLabel>
-#include <QTemporaryFile>
-#include <QFile>
-#include <QHBoxLayout>
 #include "documentwindow.hpp"
 #include "test_helpers.hpp"
+#include <QFile>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMainWindow>
+#include <QTemporaryFile>
+#include <QtTest/QtTest>
 
 class TestDocumentWindow : public QObject {
     Q_OBJECT
@@ -54,9 +54,7 @@ void TestDocumentWindow::cleanupTestCase() {
     }
 }
 
-void TestDocumentWindow::init() {
-    docWindow = new DocumentWindow();
-}
+void TestDocumentWindow::init() { docWindow = new DocumentWindow(); }
 
 void TestDocumentWindow::cleanup() {
     if (docWindow) {

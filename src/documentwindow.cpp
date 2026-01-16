@@ -95,6 +95,4 @@ void DocumentWindow::setDocumentTitle(const QString& newTitle) {
     /* this->photoView->showImage(newTitle); */
 }
 
-QString DocumentWindow::getDocumentTitle() {
-    return this->documentTitle;
-}
+QString DocumentWindow::getDocumentTitle() { return this->documentTitle; }

@@ -12,8 +12,9 @@ void SourceImageView::mousePressEvent(QMouseEvent* event) {
         // Start custom drag
         this->setDragMode(QGraphicsView::ScrollHandDrag);
         // Simulate a left button press to start the drag
-        QMouseEvent fakeEvent(event->type(), event->position(), event->globalPosition(),
-                              Qt::LeftButton, Qt::LeftButton, event->modifiers(),
+        QMouseEvent fakeEvent(event->type(), event->position(),
+                              event->globalPosition(), Qt::LeftButton,
+                              Qt::LeftButton, event->modifiers(),
                               event->pointingDevice());
         QGraphicsView::mousePressEvent(&fakeEvent);
     } else {
@@ -24,8 +25,9 @@ void SourceImageView::mousePressEvent(QMouseEvent* event) {
 void SourceImageView::mouseMoveEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::RightButton) {
         // Continue custom drag
-        QMouseEvent fakeEvent(event->type(), event->position(), event->globalPosition(),
-                              Qt::LeftButton, Qt::LeftButton, event->modifiers(),
+        QMouseEvent fakeEvent(event->type(), event->position(),
+                              event->globalPosition(), Qt::LeftButton,
+                              Qt::LeftButton, event->modifiers(),
                               event->pointingDevice());
         QGraphicsView::mouseMoveEvent(&fakeEvent);
     } else {
@@ -38,8 +40,9 @@ void SourceImageView::mouseReleaseEvent(QMouseEvent* event) {
         // End custom drag
         this->setDragMode(QGraphicsView::NoDrag);
         // Simulate a left button release to end the drag
-        QMouseEvent fakeEvent(event->type(), event->position(), event->globalPosition(),
-                              Qt::LeftButton, Qt::LeftButton, event->modifiers(),
+        QMouseEvent fakeEvent(event->type(), event->position(),
+                              event->globalPosition(), Qt::LeftButton,
+                              Qt::LeftButton, event->modifiers(),
                               event->pointingDevice());
         QGraphicsView::mouseReleaseEvent(&fakeEvent);
     } else {
@@ -48,7 +51,8 @@ void SourceImageView::mouseReleaseEvent(QMouseEvent* event) {
 }
 
 void SourceImageView::wheelEvent(QWheelEvent* event) {
-    // Use pixelDelta for high-resolution devices, fallback to angleDelta for standard mice
+    // Use pixelDelta for high-resolution devices, fallback to angleDelta for
+    // standard mice
     QPoint delta = event->pixelDelta();
     qreal deltaValue;
 

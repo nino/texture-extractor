@@ -1,15 +1,15 @@
 #pragma once
 
-#include <QImage>
-#include <QPixmap>
-#include <QString>
-#include <QTemporaryFile>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QImage>
 #include <QMouseEvent>
-#include <QWheelEvent>
+#include <QPixmap>
 #include <QPoint>
 #include <QPointF>
+#include <QString>
+#include <QTemporaryFile>
+#include <QWheelEvent>
 
 namespace TestHelpers {
 
@@ -29,7 +29,8 @@ QImage createTestImage(int width, int height, const QColor& color = Qt::white);
  * @param format File format (e.g., "PNG", "JPEG")
  * @return Path to temporary file (caller must manage lifetime)
  */
-QString createTempImageFile(int width, int height, const QString& format = "PNG");
+QString createTempImageFile(int width, int height,
+                            const QString& format = "PNG");
 
 /**
  * Simulates a mouse press event
@@ -38,8 +39,8 @@ QString createTempImageFile(int width, int height, const QString& format = "PNG"
  * @param pos Position in widget coordinates
  * @param globalPos Global position
  */
-void simulateMousePress(QWidget* widget, Qt::MouseButton button, const QPoint& pos,
-                        const QPoint& globalPos);
+void simulateMousePress(QWidget* widget, Qt::MouseButton button,
+                        const QPoint& pos, const QPoint& globalPos);
 
 /**
  * Simulates a mouse move event
@@ -48,8 +49,8 @@ void simulateMousePress(QWidget* widget, Qt::MouseButton button, const QPoint& p
  * @param globalPos Global position
  * @param buttons Currently pressed buttons
  */
-void simulateMouseMove(QWidget* widget, const QPoint& pos, const QPoint& globalPos,
-                       Qt::MouseButtons buttons);
+void simulateMouseMove(QWidget* widget, const QPoint& pos,
+                       const QPoint& globalPos, Qt::MouseButtons buttons);
 
 /**
  * Simulates a mouse release event
@@ -58,8 +59,8 @@ void simulateMouseMove(QWidget* widget, const QPoint& pos, const QPoint& globalP
  * @param pos Position in widget coordinates
  * @param globalPos Global position
  */
-void simulateMouseRelease(QWidget* widget, Qt::MouseButton button, const QPoint& pos,
-                          const QPoint& globalPos);
+void simulateMouseRelease(QWidget* widget, Qt::MouseButton button,
+                          const QPoint& pos, const QPoint& globalPos);
 
 /**
  * Simulates a mouse wheel event
@@ -68,7 +69,8 @@ void simulateMouseRelease(QWidget* widget, Qt::MouseButton button, const QPoint&
  * @param pos Position in widget coordinates
  * @param globalPos Global position
  */
-void simulateWheelEvent(QWidget* widget, int delta, const QPoint& pos, const QPoint& globalPos);
+void simulateWheelEvent(QWidget* widget, int delta, const QPoint& pos,
+                        const QPoint& globalPos);
 
 /**
  * Simulates a click and drag operation
@@ -77,7 +79,8 @@ void simulateWheelEvent(QWidget* widget, int delta, const QPoint& pos, const QPo
  * @param from Starting position
  * @param to Ending position
  */
-void simulateDrag(QWidget* widget, Qt::MouseButton button, const QPoint& from, const QPoint& to);
+void simulateDrag(QWidget* widget, Qt::MouseButton button, const QPoint& from,
+                  const QPoint& to);
 
 /**
  * Compares two QRectF objects with a tolerance
@@ -86,7 +89,8 @@ void simulateDrag(QWidget* widget, Qt::MouseButton button, const QPoint& from, c
  * @param tolerance Allowed difference (default: 0.01)
  * @return true if rectangles are approximately equal
  */
-bool rectFuzzyCompare(const QRectF& rect1, const QRectF& rect2, qreal tolerance = 0.01);
+bool rectFuzzyCompare(const QRectF& rect1, const QRectF& rect2,
+                      qreal tolerance = 0.01);
 
 /**
  * Compares two QPointF objects with a tolerance
@@ -95,7 +99,8 @@ bool rectFuzzyCompare(const QRectF& rect1, const QRectF& rect2, qreal tolerance 
  * @param tolerance Allowed difference (default: 0.01)
  * @return true if points are approximately equal
  */
-bool pointFuzzyCompare(const QPointF& point1, const QPointF& point2, qreal tolerance = 0.01);
+bool pointFuzzyCompare(const QPointF& point1, const QPointF& point2,
+                       qreal tolerance = 0.01);
 
 /**
  * Gets a graphics item at a specific scene position

@@ -1,11 +1,11 @@
-#include <QtTest/QtTest>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <QPointF>
 #include "SourceImageView.hpp"
 #include "test_helpers.hpp"
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QMouseEvent>
+#include <QPointF>
+#include <QWheelEvent>
+#include <QtTest/QtTest>
 
 class TestSourceImageView : public QObject {
     Q_OBJECT
@@ -70,9 +70,7 @@ void TestSourceImageView::cleanup() {
     scene = nullptr;
 }
 
-QTransform TestSourceImageView::getViewTransform() {
-    return view->transform();
-}
+QTransform TestSourceImageView::getViewTransform() { return view->transform(); }
 
 void TestSourceImageView::testConstruction() {
     QVERIFY(view != nullptr);
@@ -113,7 +111,8 @@ void TestSourceImageView::testRightClickStartsDrag() {
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
     // Clean up
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton, viewPos,
+    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton,
+                                      viewPos,
                                       view->viewport()->mapToGlobal(viewPos));
 }
 
@@ -154,7 +153,8 @@ void TestSourceImageView::testRightClickDragSequence() {
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
     // Move
-    TestHelpers::simulateMouseMove(view->viewport(), endPos, view->viewport()->mapToGlobal(endPos),
+    TestHelpers::simulateMouseMove(view->viewport(), endPos,
+                                   view->viewport()->mapToGlobal(endPos),
                                    Qt::RightButton);
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
@@ -182,7 +182,8 @@ void TestSourceImageView::testWheelZoomOut() {
     QTransform initialTransform = getViewTransform();
 
     QPoint pos(400, 300);
-    TestHelpers::simulateWheelEvent(view->viewport(), -120, // Negative = zoom out
+    TestHelpers::simulateWheelEvent(view->viewport(),
+                                    -120, // Negative = zoom out
                                     pos, view->viewport()->mapToGlobal(pos));
 
     QTransform newTransform = getViewTransform();
@@ -221,7 +222,8 @@ void TestSourceImageView::testZoomChangesTransform() {
     QTransform before = getViewTransform();
 
     QPoint pos(400, 300);
-    TestHelpers::simulateWheelEvent(view->viewport(), 120, pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateWheelEvent(view->viewport(), 120, pos,
+                                    view->viewport()->mapToGlobal(pos));
 
     QTransform after = getViewTransform();
 
@@ -238,7 +240,8 @@ void TestSourceImageView::testWithScene() {
 void TestSourceImageView::testWithSceneAndContent() {
     // Add some content to the scene
     QImage testImage = TestHelpers::createTestImage(500, 500);
-    QGraphicsPixmapItem* pixmapItem = scene->addPixmap(QPixmap::fromImage(testImage));
+    QGraphicsPixmapItem* pixmapItem =
+        scene->addPixmap(QPixmap::fromImage(testImage));
     QVERIFY(pixmapItem != nullptr);
 
     // The scene should have items
@@ -271,7 +274,8 @@ void TestSourceImageView::testPanningWithContent() {
     QPoint startPos(400, 300);
     QPoint endPos(500, 400);
 
-    TestHelpers::simulateDrag(view->viewport(), Qt::RightButton, startPos, endPos);
+    TestHelpers::simulateDrag(view->viewport(), Qt::RightButton, startPos,
+                              endPos);
 
     QPointF newCenter = view->mapToScene(view->viewport()->rect().center());
 

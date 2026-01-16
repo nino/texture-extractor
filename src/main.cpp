@@ -7,8 +7,7 @@
 
 class MyApplication : public QApplication {
   public:
-    MyApplication(int& argc, char** argv) : QApplication(argc, argv) {
-    }
+    MyApplication(int& argc, char** argv) : QApplication(argc, argv) {}
 
     bool event(QEvent* event) override {
         if (event->type() == QEvent::FileOpen) {
@@ -22,9 +21,7 @@ class MyApplication : public QApplication {
         return QApplication::event(event);
     }
 
-    void setMainWindow(MainWindow* mainWindow) {
-        m_mainWindow = mainWindow;
-    }
+    void setMainWindow(MainWindow* mainWindow) { m_mainWindow = mainWindow; }
 
   private:
     MainWindow* m_mainWindow = nullptr;

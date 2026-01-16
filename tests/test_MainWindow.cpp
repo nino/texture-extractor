@@ -1,16 +1,16 @@
-#include <QtTest/QtTest>
+#include "documentwindow.hpp"
+#include "mainwindow.hpp"
+#include "test_helpers.hpp"
 #include <QAction>
-#include <QMenu>
-#include <QMenuBar>
-#include <QKeySequence>
-#include <QMimeData>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QUrl>
+#include <QKeySequence>
+#include <QMenu>
+#include <QMenuBar>
+#include <QMimeData>
 #include <QSignalSpy>
-#include "mainwindow.hpp"
-#include "documentwindow.hpp"
-#include "test_helpers.hpp"
+#include <QUrl>
+#include <QtTest/QtTest>
 
 class TestMainWindow : public QObject {
     Q_OBJECT
@@ -69,13 +69,12 @@ void TestMainWindow::cleanupTestCase() {
     }
 }
 
-void TestMainWindow::init() {
-    mainWindow = new MainWindow();
-}
+void TestMainWindow::init() { mainWindow = new MainWindow(); }
 
 void TestMainWindow::cleanup() {
     // Close and delete all child DocumentWindows
-    QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
+    QList<DocumentWindow*> docWindows =
+        mainWindow->findChildren<DocumentWindow*>();
     for (DocumentWindow* doc : docWindows) {
         doc->setAttribute(Qt::WA_DeleteOnClose, false);
         doc->close();
@@ -86,9 +85,7 @@ void TestMainWindow::cleanup() {
     mainWindow = nullptr;
 }
 
-void TestMainWindow::testConstruction() {
-    QVERIFY(mainWindow != nullptr);
-}
+void TestMainWindow::testConstruction() { QVERIFY(mainWindow != nullptr); }
 
 void TestMainWindow::testMenuBarExists() {
     QMenuBar* menuBar = mainWindow->menuBar();
@@ -179,9 +176,7 @@ void TestMainWindow::testFileMenuContainsOpenAction() {
     QVERIFY(foundOpen);
 }
 
-void TestMainWindow::testAcceptsDrops() {
-    QVERIFY(mainWindow->acceptDrops());
-}
+void TestMainWindow::testAcceptsDrops() { QVERIFY(mainWindow->acceptDrops()); }
 
 void TestMainWindow::testDragEnterWithUrls() {
     QMimeData* mimeData = new QMimeData();
@@ -189,8 +184,8 @@ void TestMainWindow::testDragEnterWithUrls() {
     urls << QUrl::fromLocalFile(testImagePath1);
     mimeData->setUrls(urls);
 
-    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
-                          Qt::NoModifier);
+    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
+                          Qt::LeftButton, Qt::NoModifier);
 
     // Send the event
     QCoreApplication::sendEvent(mainWindow, &event);
@@ -205,8 +200,8 @@ void TestMainWindow::testDragEnterWithoutUrls() {
     QMimeData* mimeData = new QMimeData();
     mimeData->setText("Some text");
 
-    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
-                          Qt::NoModifier);
+    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
+                          Qt::LeftButton, Qt::NoModifier);
 
     // Send the event
     QCoreApplication::sendEvent(mainWindow, &event);
@@ -224,8 +219,8 @@ void TestMainWindow::testDropEventWithLocalFile() {
     mimeData->setUrls(urls);
 
     // First send drag enter event
-    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
-                               Qt::NoModifier);
+    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData,
+                               Qt::LeftButton, Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &enterEvent);
     QApplication::processEvents();
 
@@ -233,7 +228,8 @@ void TestMainWindow::testDropEventWithLocalFile() {
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
     // Now send the drop event
-    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton, Qt::NoModifier);
+    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
+                     Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &event);
 
     // Process events to allow window creation
@@ -256,15 +252,16 @@ void TestMainWindow::testDropEventWithMultipleFiles() {
     mimeData->setUrls(urls);
 
     // First send drag enter event
-    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
-                               Qt::NoModifier);
+    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData,
+                               Qt::LeftButton, Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &enterEvent);
     QApplication::processEvents();
 
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
     // Now send drop event
-    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton, Qt::NoModifier);
+    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
+                     Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &event);
 
     // Process events to allow window creation
@@ -293,7 +290,8 @@ void TestMainWindow::testOpenFileSingle() {
 void TestMainWindow::testOpenFileCreatesDocumentWindow() {
     mainWindow->openFile(testImagePath1);
 
-    QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
+    QList<DocumentWindow*> docWindows =
+        mainWindow->findChildren<DocumentWindow*>();
     QVERIFY(!docWindows.isEmpty());
 
     // The last created window should have our file path as title

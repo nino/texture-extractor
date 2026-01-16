@@ -12,16 +12,17 @@ EditableRectItem::EditableRectItem(QRectF const& rect, QGraphicsItem* parent)
 
 QRectF EditableRectItem::boundingRect() const {
     // Add some padding for the handles
-    return this->rectangle.adjusted((-handleSize / 2) / this->scale,
-                                    (-handleSize / 2) / this->scale, (handleSize / 2) / this->scale,
-                                    (handleSize / 2) / this->scale);
+    return this->rectangle.adjusted(
+        (-handleSize / 2) / this->scale, (-handleSize / 2) / this->scale,
+        (handleSize / 2) / this->scale, (handleSize / 2) / this->scale);
 }
 
 qreal EditableRectItem::scaledHandleSize() const noexcept {
     return handleSize / this->scale;
 }
 
-void EditableRectItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* option,
+void EditableRectItem::paint(QPainter* painter,
+                             QStyleOptionGraphicsItem const* option,
                              QWidget* widget) {
     Q_UNUSED(widget);
 
@@ -41,30 +42,34 @@ void EditableRectItem::paint(QPainter* painter, QStyleOptionGraphicsItem const* 
 
     qreal scaledHandle = this->scaledHandleSize();
     painter->drawRect(QRectF(this->rectangle.left() - scaledHandle / 2,
-                             this->rectangle.top() - scaledHandle / 2, scaledHandle, scaledHandle));
+                             this->rectangle.top() - scaledHandle / 2,
+                             scaledHandle, scaledHandle));
     painter->drawRect(QRectF(this->rectangle.left() - scaledHandle / 2,
-                             this->rectangle.bottom() - scaledHandle / 2, scaledHandle,
-                             scaledHandle));
+                             this->rectangle.bottom() - scaledHandle / 2,
+                             scaledHandle, scaledHandle));
     painter->drawRect(QRectF(this->rectangle.right() - scaledHandle / 2,
-                             this->rectangle.top() - scaledHandle / 2, scaledHandle, scaledHandle));
+                             this->rectangle.top() - scaledHandle / 2,
+                             scaledHandle, scaledHandle));
     painter->drawRect(QRectF(this->rectangle.right() - scaledHandle / 2,
-                             this->rectangle.bottom() - scaledHandle / 2, scaledHandle,
-                             scaledHandle));
+                             this->rectangle.bottom() - scaledHandle / 2,
+                             scaledHandle, scaledHandle));
 }
 
 void EditableRectItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 
     qreal scaledHandle = this->scaledHandleSize();
     auto topLeft = QRectF(this->rectangle.left() - scaledHandle / 2,
-                          this->rectangle.top() - scaledHandle / 2, scaledHandle, scaledHandle);
-    auto bottomLeft =
-        QRectF(this->rectangle.left() - scaledHandle / 2,
-               this->rectangle.bottom() - scaledHandle / 2, scaledHandle, scaledHandle);
+                          this->rectangle.top() - scaledHandle / 2,
+                          scaledHandle, scaledHandle);
+    auto bottomLeft = QRectF(this->rectangle.left() - scaledHandle / 2,
+                             this->rectangle.bottom() - scaledHandle / 2,
+                             scaledHandle, scaledHandle);
     auto topRight = QRectF(this->rectangle.right() - scaledHandle / 2,
-                           this->rectangle.top() - scaledHandle / 2, scaledHandle, scaledHandle);
-    auto bottomRight =
-        QRectF(this->rectangle.right() - scaledHandle / 2,
-               this->rectangle.bottom() - scaledHandle / 2, scaledHandle, scaledHandle);
+                           this->rectangle.top() - scaledHandle / 2,
+                           scaledHandle, scaledHandle);
+    auto bottomRight = QRectF(this->rectangle.right() - scaledHandle / 2,
+                              this->rectangle.bottom() - scaledHandle / 2,
+                              scaledHandle, scaledHandle);
 
     if (topLeft.contains(event->pos())) {
         this->currentlyDragging = EditableRectItem::DraggedPart::TopLeft;
@@ -82,24 +87,24 @@ void EditableRectItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 void EditableRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     auto delta = event->pos() - event->lastPos();
     switch (this->currentlyDragging) {
-        case EditableRectItem::DraggedPart::TopLeft: {
-            this->rectangle.setTopLeft(this->rectangle.topLeft() + delta);
-            break;
-        }
-        case EditableRectItem::DraggedPart::TopRight: {
-            this->rectangle.setTopRight(this->rectangle.topRight() + delta);
-            break;
-        }
-        case EditableRectItem::DraggedPart::BottomLeft: {
-            this->rectangle.setBottomLeft(this->rectangle.bottomLeft() + delta);
-            break;
-        }
-        case EditableRectItem::DraggedPart::BottomRight: {
-            this->rectangle.setBottomRight(this->rectangle.bottomRight() + delta);
-            break;
-        }
-        default: {
-        }
+    case EditableRectItem::DraggedPart::TopLeft: {
+        this->rectangle.setTopLeft(this->rectangle.topLeft() + delta);
+        break;
+    }
+    case EditableRectItem::DraggedPart::TopRight: {
+        this->rectangle.setTopRight(this->rectangle.topRight() + delta);
+        break;
+    }
+    case EditableRectItem::DraggedPart::BottomLeft: {
+        this->rectangle.setBottomLeft(this->rectangle.bottomLeft() + delta);
+        break;
+    }
+    case EditableRectItem::DraggedPart::BottomRight: {
+        this->rectangle.setBottomRight(this->rectangle.bottomRight() + delta);
+        break;
+    }
+    default: {
+    }
     }
     this->update();
 }

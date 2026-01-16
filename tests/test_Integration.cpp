@@ -1,14 +1,14 @@
-#include <QtTest/QtTest>
+#include "EditableRectItem.hpp"
+#include "ExtractedView.hpp"
+#include "SourceImageView.hpp"
+#include "documentwindow.hpp"
+#include "mainwindow.hpp"
+#include "test_helpers.hpp"
+#include <QFile>
+#include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include <QGraphicsPixmapItem>
-#include <QFile>
-#include "mainwindow.hpp"
-#include "documentwindow.hpp"
-#include "SourceImageView.hpp"
-#include "ExtractedView.hpp"
-#include "EditableRectItem.hpp"
-#include "test_helpers.hpp"
+#include <QtTest/QtTest>
 
 using namespace ninoan::texture_extractor;
 
@@ -58,7 +58,8 @@ void TestIntegration::init() {
 
 void TestIntegration::cleanup() {
     // Close all document windows
-    QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
+    QList<DocumentWindow*> docWindows =
+        mainWindow->findChildren<DocumentWindow*>();
     for (DocumentWindow* doc : docWindows) {
         doc->setAttribute(Qt::WA_DeleteOnClose, false);
         doc->close();
@@ -79,7 +80,8 @@ void TestIntegration::testCompleteWorkflow() {
     QTest::qWait(100);
 
     // 3. Verify DocumentWindow was created
-    QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
+    QList<DocumentWindow*> docWindows =
+        mainWindow->findChildren<DocumentWindow*>();
     QVERIFY(!docWindows.isEmpty());
 
     DocumentWindow* docWindow = docWindows.first();
@@ -124,7 +126,8 @@ void TestIntegration::testDocumentWindowContainsAllViews() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     QVERIFY(docWindow != nullptr);
 
     // Should have both SourceImageView and ExtractedView
@@ -139,7 +142,8 @@ void TestIntegration::testGraphicsSceneIntegration() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     SourceImageView* sourceView = docWindow->findChild<SourceImageView*>();
 
     QVERIFY(sourceView != nullptr);
@@ -147,7 +151,8 @@ void TestIntegration::testGraphicsSceneIntegration() {
     QGraphicsScene* scene = sourceView->scene();
     QVERIFY(scene != nullptr);
 
-    // Scene should have multiple items (MovableEllipse, EditableRectItem, Pixmap)
+    // Scene should have multiple items (MovableEllipse, EditableRectItem,
+    // Pixmap)
     QVERIFY(scene->items().size() >= 2);
 }
 
@@ -155,7 +160,8 @@ void TestIntegration::testEditableRectInScene() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     SourceImageView* sourceView = docWindow->findChild<SourceImageView*>();
     QGraphicsScene* scene = sourceView->scene();
 
@@ -166,7 +172,8 @@ void TestIntegration::testEditableRectInScene() {
     for (QGraphicsItem* item : scene->items()) {
         // EditableRectItem doesn't inherit from any standard Qt item type
         // so we check by type or other means
-        if (item->isSelected() || item->flags() & QGraphicsItem::ItemIsSelectable) {
+        if (item->isSelected() ||
+            item->flags() & QGraphicsItem::ItemIsSelectable) {
             // Could be our EditableRectItem
             foundEditableRect = true;
         }
@@ -186,7 +193,8 @@ void TestIntegration::testMultipleDocumentWindows() {
     QTest::qWait(50);
 
     // Should have two document windows
-    QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
+    QList<DocumentWindow*> docWindows =
+        mainWindow->findChildren<DocumentWindow*>();
     QCOMPARE(docWindows.size(), 2);
 
     // Each should have its own views and scenes
@@ -203,14 +211,16 @@ void TestIntegration::testImageLoadingPipeline() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     SourceImageView* sourceView = docWindow->findChild<SourceImageView*>();
     QGraphicsScene* scene = sourceView->scene();
 
     // Find the pixmap item in the scene
     bool foundPixmap = false;
     for (QGraphicsItem* item : scene->items()) {
-        QGraphicsPixmapItem* pixmapItem = dynamic_cast<QGraphicsPixmapItem*>(item);
+        QGraphicsPixmapItem* pixmapItem =
+            dynamic_cast<QGraphicsPixmapItem*>(item);
         if (pixmapItem != nullptr) {
             foundPixmap = true;
             // Pixmap should not be null
@@ -226,7 +236,8 @@ void TestIntegration::testViewInteractionWithItems() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     SourceImageView* sourceView = docWindow->findChild<SourceImageView*>();
     QGraphicsScene* scene = sourceView->scene();
 
@@ -245,7 +256,8 @@ void TestIntegration::testPanAndZoomWithContent() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     SourceImageView* sourceView = docWindow->findChild<SourceImageView*>();
 
     QVERIFY(sourceView != nullptr);
@@ -258,8 +270,9 @@ void TestIntegration::testPanAndZoomWithContent() {
     QTransform initialTransform = sourceView->transform();
 
     QPoint center(sourceView->width() / 2, sourceView->height() / 2);
-    TestHelpers::simulateWheelEvent(sourceView->viewport(), 120, center,
-                                    sourceView->viewport()->mapToGlobal(center));
+    TestHelpers::simulateWheelEvent(
+        sourceView->viewport(), 120, center,
+        sourceView->viewport()->mapToGlobal(center));
 
     QTransform zoomedTransform = sourceView->transform();
 
@@ -267,13 +280,16 @@ void TestIntegration::testPanAndZoomWithContent() {
     QVERIFY(zoomedTransform != initialTransform);
 
     // Test panning
-    QPointF centerBefore = sourceView->mapToScene(sourceView->viewport()->rect().center());
+    QPointF centerBefore =
+        sourceView->mapToScene(sourceView->viewport()->rect().center());
 
     QPoint startPos(100, 100);
     QPoint endPos(200, 200);
-    TestHelpers::simulateDrag(sourceView->viewport(), Qt::RightButton, startPos, endPos);
+    TestHelpers::simulateDrag(sourceView->viewport(), Qt::RightButton, startPos,
+                              endPos);
 
-    QPointF centerAfter = sourceView->mapToScene(sourceView->viewport()->rect().center());
+    QPointF centerAfter =
+        sourceView->mapToScene(sourceView->viewport()->rect().center());
 
     // Pan should have moved the view
     QVERIFY(!TestHelpers::pointFuzzyCompare(centerBefore, centerAfter, 1.0));
@@ -283,7 +299,8 @@ void TestIntegration::testResizingRectInFullContext() {
     mainWindow->openFile(testImagePath);
     QTest::qWait(100);
 
-    DocumentWindow* docWindow = mainWindow->findChildren<DocumentWindow*>().first();
+    DocumentWindow* docWindow =
+        mainWindow->findChildren<DocumentWindow*>().first();
     SourceImageView* sourceView = docWindow->findChild<SourceImageView*>();
     QGraphicsScene* scene = sourceView->scene();
 
