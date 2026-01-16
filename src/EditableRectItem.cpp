@@ -1,4 +1,4 @@
-#include "EditableRectItem.h"
+#include "EditableRectItem.hpp"
 #include <QRectF>
 
 namespace ninoan::texture_extractor {

@@ -8,9 +8,9 @@
 #include <QDropEvent>
 #include <QUrl>
 #include <QSignalSpy>
-#include "mainwindow.h"
-#include "documentwindow.h"
-#include "test_helpers.h"
+#include "mainwindow.hpp"
+#include "documentwindow.hpp"
+#include "test_helpers.hpp"
 
 class TestMainWindow : public QObject {
     Q_OBJECT

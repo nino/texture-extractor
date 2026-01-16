@@ -1,4 +1,4 @@
-#include "SourceImageView.h"
+#include "SourceImageView.hpp"
 #include <QDebug>
 #include <QGraphicsView>
 #include <QMouseEvent>

@@ -20,15 +20,15 @@ set(TS_FILES texture_extractor_en_US.ts)
 
 # Library sources (without main.cpp for testability)
 set(LIBRARY_SOURCES
-        src/mainwindow.h
+        src/mainwindow.hpp
         src/mainwindow.cpp
-        src/documentwindow.h
+        src/documentwindow.hpp
         src/documentwindow.cpp
-        src/SourceImageView.h
+        src/SourceImageView.hpp
         src/SourceImageView.cpp
-        src/EditableRectItem.h
+        src/EditableRectItem.hpp
         src/EditableRectItem.cpp
-        src/ExtractedView.h
+        src/ExtractedView.hpp
         src/ExtractedView.cpp
 )
 

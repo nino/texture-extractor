@@ -4,8 +4,8 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QPointF>
-#include "SourceImageView.h"
-#include "test_helpers.h"
+#include "SourceImageView.hpp"
+#include "test_helpers.hpp"
 
 class TestSourceImageView : public QObject {
     Q_OBJECT

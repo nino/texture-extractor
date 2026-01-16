@@ -5,8 +5,8 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QImage>
-#include "EditableRectItem.h"
-#include "test_helpers.h"
+#include "EditableRectItem.hpp"
+#include "test_helpers.hpp"
 
 using namespace ninoan::texture_extractor;
 

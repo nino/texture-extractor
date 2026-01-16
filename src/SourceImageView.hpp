@@ -1,5 +1,4 @@
-#ifndef SOURCEIMAGEVIEW_H
-#define SOURCEIMAGEVIEW_H
+#pragma once
 
 #include <QGraphicsView>
 #include <QImage>
@@ -25,5 +24,3 @@ class SourceImageView : public QGraphicsView {
 
   private:
 };
-
-#endif // SOURCEIMAGEVIEW_H

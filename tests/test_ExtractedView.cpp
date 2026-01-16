@@ -1,8 +1,8 @@
 #include <QtTest/QtTest>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
-#include "ExtractedView.h"
-#include "test_helpers.h"
+#include "ExtractedView.hpp"
+#include "test_helpers.hpp"
 
 class TestExtractedView : public QObject {
     Q_OBJECT

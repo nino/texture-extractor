@@ -1,6 +1,6 @@
-#include "documentwindow.h"
-#include "EditableRectItem.h"
-#include "ExtractedView.h"
+#include "documentwindow.hpp"
+#include "EditableRectItem.hpp"
+#include "ExtractedView.hpp"
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneDragDropEvent>

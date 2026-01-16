@@ -1,4 +1,4 @@
-#include "test_helpers.h"
+#include "test_helpers.hpp"
 #include <QPainter>
 #include <QApplication>
 #include <QtMath>

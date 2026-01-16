@@ -1,5 +1,4 @@
-#ifndef TEST_HELPERS_H
-#define TEST_HELPERS_H
+#pragma once
 
 #include <QImage>
 #include <QPixmap>
@@ -109,5 +108,3 @@ bool pointFuzzyCompare(const QPointF& point1, const QPointF& point2, qreal toler
 QGraphicsItem* itemAtScenePos(QGraphicsScene* scene, const QPointF& scenePos);
 
 } // namespace TestHelpers
-
-#endif // TEST_HELPERS_H

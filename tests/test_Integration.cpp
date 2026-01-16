@@ -3,12 +3,12 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QFile>
-#include "mainwindow.h"
-#include "documentwindow.h"
-#include "SourceImageView.h"
-#include "ExtractedView.h"
-#include "EditableRectItem.h"
-#include "test_helpers.h"
+#include "mainwindow.hpp"
+#include "documentwindow.hpp"
+#include "SourceImageView.hpp"
+#include "ExtractedView.hpp"
+#include "EditableRectItem.hpp"
+#include "test_helpers.hpp"
 
 using namespace ninoan::texture_extractor;
 

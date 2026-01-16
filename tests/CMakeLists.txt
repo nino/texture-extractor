@@ -22,7 +22,7 @@ add_gui_test(test_MainWindow)
 add_gui_test(test_Integration)
 
 # Test utilities library
-add_library(test_helpers STATIC test_helpers.h test_helpers.cpp)
+add_library(test_helpers STATIC test_helpers.hpp test_helpers.cpp)
 target_link_libraries(test_helpers PUBLIC
     Qt${QT_VERSION_MAJOR}::Test
     Qt${QT_VERSION_MAJOR}::Widgets

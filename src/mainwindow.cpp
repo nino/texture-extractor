@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "documentwindow.h"
+#include "mainwindow.hpp"
+#include "documentwindow.hpp"
 #include <QDebug>
 #include <QDragEnterEvent>
 #include <QFileDialog>

@@ -1,8 +1,7 @@
-#ifndef DOCUMENTWINDOW_H
-#define DOCUMENTWINDOW_H
+#pragma once
 
-#include "ExtractedView.h"
-#include "SourceImageView.h"
+#include "ExtractedView.hpp"
+#include "SourceImageView.hpp"
 #include <QGraphicsView>
 #include <QImage>
 #include <QMainWindow>
@@ -41,5 +40,3 @@ class DocumentWindow : public QMainWindow {
 
   signals:
 };
-
-#endif // DOCUMENTWINDOW_H

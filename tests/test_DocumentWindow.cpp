@@ -4,8 +4,8 @@
 #include <QTemporaryFile>
 #include <QFile>
 #include <QHBoxLayout>
-#include "documentwindow.h"
-#include "test_helpers.h"
+#include "documentwindow.hpp"
+#include "test_helpers.hpp"
 
 class TestDocumentWindow : public QObject {
     Q_OBJECT

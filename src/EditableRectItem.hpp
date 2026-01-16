@@ -1,5 +1,4 @@
-#ifndef EDITABLERECTITEM_H
-#define EDITABLERECTITEM_H
+#pragma once
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
@@ -42,6 +41,4 @@ class EditableRectItem : public QGraphicsItem {
     qreal scaled_handle_size() const noexcept;
 };
 
-}; // namespace ninoan::texture_extractor
-
-#endif // EDITABLERECTITEM_H
+} // namespace ninoan::texture_extractor
