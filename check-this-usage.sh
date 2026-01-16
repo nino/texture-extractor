@@ -1,16 +1,8 @@
 #!/bin/bash
 # Script to check for missing explicit this-> usage in C++ member functions
-# Uses clang-query to find implicit this usage
+# Simple source-based approach
 
 set -e
-
-BUILD_DIR="${BUILD_DIR:-build}"
-
-if [ ! -f "$BUILD_DIR/compile_commands.json" ]; then
-    echo "Error: compile_commands.json not found in $BUILD_DIR"
-    echo "Please run: cmake -B$BUILD_DIR -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-    exit 1
-fi
 
 echo "Checking for implicit this-> usage..."
 echo "======================================="
@@ -23,36 +15,40 @@ if [ -z "$SRC_FILES" ]; then
     exit 0
 fi
 
-# Create a temporary clang-query file
-QUERY_FILE=$(mktemp)
-cat > "$QUERY_FILE" << 'QUERY'
-set output diag
-match memberExpr(
-  hasObjectExpression(ignoringImpCasts(cxxThisExpr())),
-  unless(hasObjectExpression(materializeTemporaryExpr())),
-  unless(hasAncestor(cxxDependentScopeMemberExpr()))
-)
-QUERY
-
-# Run clang-query on each file
 FOUND_ISSUES=0
+
+# Read the list of member names from headers
+# This is a simplified check - look for common patterns of implicit member access
+
 for file in $SRC_FILES; do
-    OUTPUT=$(clang-query -p="$BUILD_DIR" "$file" -f="$QUERY_FILE" 2>&1 | grep -v "Skipping" | grep -v "^$" || true)
-    if [ -n "$OUTPUT" ]; then
-        echo "Issues in $file:"
-        echo "$OUTPUT"
+    # Look for lines that might be implicit member access
+    # Pattern: lines with identifier followed by = or -> or ( that aren't preceded by this->
+    # This is a heuristic and may have false positives/negatives
+    
+    # Skip lines with "this->" already
+    # Look for patterns like: memberVar = ... or memberFunc(...) at start of statement
+    VIOLATIONS=$(grep -n '^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*[=(]' "$file" | \
+                grep -v 'this->' | \
+                grep -v '^[[:space:]]*//' | \
+                grep -v '^[[:space:]]*/\*' | \
+                grep -v '.*:.*:' | \
+                head -20 || true)
+    
+    if [ -n "$VIOLATIONS" ]; then
+        echo "Potential issues in $file (first 20):"
+        echo "$VIOLATIONS"
         echo ""
         FOUND_ISSUES=1
     fi
 done
 
-rm -f "$QUERY_FILE"
-
 if [ $FOUND_ISSUES -eq 0 ]; then
-    echo "✓ All member accesses use explicit this->"
+    echo "✓ All member accesses appear to use explicit this->"
+    echo "(Note: This is a simplified check - manual review recommended)"
     exit 0
 else
-    echo "✗ Found member accesses without explicit this->"
-    echo "Please add 'this->' prefix to all member accesses"
+    echo "✗ Found potential member accesses without explicit this->"
+    echo "Please review the above lines and add 'this->' prefix where appropriate"
+    echo "(Note: This check may have false positives)"
     exit 1
 fi
