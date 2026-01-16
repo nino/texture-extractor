@@ -17,10 +17,10 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
     this->openAction->setStatusTip(tr("Open a file"));
     connect(this->openAction, &QAction::triggered, this, &MainWindow::open);
 
-    this->fileMenu = this->menuBar()->addMenu(tr("&File"));
-    this->fileMenu->addSeparator();
-    this->fileMenu->addAction(this->openAction);
-    this->setAcceptDrops(true);
+    fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addSeparator();
+    fileMenu->addAction(openAction);
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow() {}
