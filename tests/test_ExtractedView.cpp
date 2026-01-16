@@ -7,7 +7,7 @@
 class TestExtractedView : public QObject {
     Q_OBJECT
 
-private slots:
+  private slots:
     void initTestCase();
     void cleanupTestCase();
     void init();
@@ -29,43 +29,37 @@ private slots:
     void testScale();
     void testViewport();
 
-private:
+  private:
     ExtractedView* view;
     QGraphicsScene* scene;
 };
 
-void TestExtractedView::initTestCase()
-{
+void TestExtractedView::initTestCase() {
     view = nullptr;
     scene = nullptr;
 }
 
-void TestExtractedView::cleanupTestCase()
-{
+void TestExtractedView::cleanupTestCase() {
     // Called after all tests
 }
 
-void TestExtractedView::init()
-{
+void TestExtractedView::init() {
     view = new ExtractedView();
     scene = new QGraphicsScene();
 }
 
-void TestExtractedView::cleanup()
-{
+void TestExtractedView::cleanup() {
     delete view;
     view = nullptr;
     delete scene;
     scene = nullptr;
 }
 
-void TestExtractedView::testConstruction()
-{
+void TestExtractedView::testConstruction() {
     QVERIFY(view != nullptr);
 }
 
-void TestExtractedView::testConstructionWithParent()
-{
+void TestExtractedView::testConstructionWithParent() {
     QWidget parent;
     ExtractedView* childView = new ExtractedView(&parent);
 
@@ -75,8 +69,7 @@ void TestExtractedView::testConstructionWithParent()
     // Parent will delete the child
 }
 
-void TestExtractedView::testIsQGraphicsView()
-{
+void TestExtractedView::testIsQGraphicsView() {
     // Test that ExtractedView is indeed a QGraphicsView
     QGraphicsView* basePointer = view;
     QVERIFY(basePointer != nullptr);
@@ -86,14 +79,12 @@ void TestExtractedView::testIsQGraphicsView()
     QVERIFY(castView != nullptr);
 }
 
-void TestExtractedView::testSetScene()
-{
+void TestExtractedView::testSetScene() {
     view->setScene(scene);
     QCOMPARE(view->scene(), scene);
 }
 
-void TestExtractedView::testSceneWithContent()
-{
+void TestExtractedView::testSceneWithContent() {
     view->setScene(scene);
 
     // Add content to the scene
@@ -108,24 +99,21 @@ void TestExtractedView::testSceneWithContent()
     QCOMPARE(view->scene()->items().size(), 1);
 }
 
-void TestExtractedView::testResize()
-{
+void TestExtractedView::testResize() {
     view->resize(640, 480);
 
     QCOMPARE(view->width(), 640);
     QCOMPARE(view->height(), 480);
 }
 
-void TestExtractedView::testShow()
-{
+void TestExtractedView::testShow() {
     view->show();
     QTest::qWaitForWindowExposed(view);
 
     QVERIFY(view->isVisible());
 }
 
-void TestExtractedView::testTransform()
-{
+void TestExtractedView::testTransform() {
     QTransform initialTransform = view->transform();
 
     // Apply a transform
@@ -139,8 +127,7 @@ void TestExtractedView::testTransform()
     QCOMPARE(newTransform.m22(), 2.0);
 }
 
-void TestExtractedView::testScale()
-{
+void TestExtractedView::testScale() {
     QTransform initial = view->transform();
 
     view->scale(1.5, 1.5);
@@ -152,8 +139,7 @@ void TestExtractedView::testScale()
     QVERIFY(after.m22() > initial.m22());
 }
 
-void TestExtractedView::testViewport()
-{
+void TestExtractedView::testViewport() {
     QWidget* viewport = view->viewport();
 
     QVERIFY(viewport != nullptr);

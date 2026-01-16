@@ -11,19 +11,19 @@
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow{parent} {
-    openAction = new QAction(QIcon::fromTheme("document-open"),
-                             tr("&Open"), this);
-    openAction->setShortcuts(QKeySequence::Open);
-    openAction->setStatusTip(tr("Open a file"));
-    connect(openAction, &QAction::triggered, this, &MainWindow::open);
+    this->openAction = new QAction(QIcon::fromTheme("document-open"), tr("&Open"), this);
+    this->openAction->setShortcuts(QKeySequence::Open);
+    this->openAction->setStatusTip(tr("Open a file"));
+    connect(this->openAction, &QAction::triggered, this, &MainWindow::open);
 
-    fileMenu = menuBar()->addMenu(tr("&File"));
-    fileMenu->addSeparator();
-    fileMenu->addAction(openAction);
-    setAcceptDrops(true);
+    this->fileMenu = this->menuBar()->addMenu(tr("&File"));
+    this->fileMenu->addSeparator();
+    this->fileMenu->addAction(this->openAction);
+    this->setAcceptDrops(true);
 }
 
-MainWindow::~MainWindow() {}
+MainWindow::~MainWindow() {
+}
 
 void MainWindow::open() noexcept {
     QFileDialog dialog(this);
@@ -35,18 +35,18 @@ void MainWindow::open() noexcept {
         qDebug() << fileNames;
         for (auto fileName : fileNames) {
             DocumentWindow* doc = new DocumentWindow(this);
-            doc->set_document_title(fileName);
+            doc->setDocumentTitle(fileName);
             doc->show();
-            qDebug() << doc->get_document_title();
+            qDebug() << doc->getDocumentTitle();
         }
     }
 }
 
 void MainWindow::openFile(const QString& fileName) noexcept {
     DocumentWindow* doc = new DocumentWindow(this);
-    doc->set_document_title(fileName);
+    doc->setDocumentTitle(fileName);
     doc->show();
-    qDebug() << "Opened file:" << doc->get_document_title();
+    qDebug() << "Opened file:" << doc->getDocumentTitle();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
@@ -61,7 +61,7 @@ void MainWindow::dropEvent(QDropEvent* event) {
         QList<QUrl> urlList = mimeData->urls();
         for (const QUrl& url : urlList) {
             if (url.isLocalFile()) {
-                openFile(url.toLocalFile());
+                this->openFile(url.toLocalFile());
             }
         }
     }

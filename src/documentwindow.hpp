@@ -11,7 +11,7 @@ class PhotoView : public QWidget {
     Q_OBJECT
 
   public:
-    explicit PhotoView(QString const& file_path, QWidget* parent = nullptr);
+    explicit PhotoView(QString const& filePath, QWidget* parent = nullptr);
 
   public slots:
 
@@ -19,11 +19,11 @@ class PhotoView : public QWidget {
 
   private:
     SourceImageView* graphics;
-    ExtractedView* extracted_view;
+    ExtractedView* extractedView;
 
     QImage image;
 
-    void show_image(QString path);
+    void showImage(QString path);
 };
 
 class DocumentWindow : public QMainWindow {
@@ -31,12 +31,12 @@ class DocumentWindow : public QMainWindow {
 
   public:
     explicit DocumentWindow(QMainWindow* parent = nullptr);
-    void set_document_title(const QString& new_title);
-    QString get_document_title();
+    void setDocumentTitle(const QString& newTitle);
+    QString getDocumentTitle();
 
   private:
-    QString document_title;
-    PhotoView* photo_view;
+    QString documentTitle;
+    PhotoView* photoView;
 
   signals:
 };

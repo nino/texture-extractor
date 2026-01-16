@@ -11,13 +11,11 @@ namespace ninoan::texture_extractor {
 
 class EditableRectItem : public QGraphicsItem {
   public:
-    explicit EditableRectItem(QRectF const& rect,
-                              QGraphicsItem* parent = nullptr);
+    explicit EditableRectItem(QRectF const& rect, QGraphicsItem* parent = nullptr);
 
     QRectF boundingRect() const override;
 
-    void paint(QPainter* painter, QStyleOptionGraphicsItem const* option,
-               QWidget* widget) override;
+    void paint(QPainter* painter, QStyleOptionGraphicsItem const* option, QWidget* widget) override;
 
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -33,12 +31,12 @@ class EditableRectItem : public QGraphicsItem {
         WholeRectangle,
     };
 
-    static constexpr qreal handle_size = 10.0;
+    static constexpr qreal handleSize = 10.0;
     QRectF rectangle;
     qreal scale = 1.0;
-    DraggedPart currently_dragging = DraggedPart::Nothing;
+    DraggedPart currentlyDragging = DraggedPart::Nothing;
 
-    qreal scaled_handle_size() const noexcept;
+    qreal scaledHandleSize() const noexcept;
 };
 
 } // namespace ninoan::texture_extractor

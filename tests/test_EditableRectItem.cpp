@@ -13,7 +13,7 @@ using namespace ninoan::texture_extractor;
 class TestEditableRectItem : public QObject {
     Q_OBJECT
 
-private slots:
+  private slots:
     void initTestCase();
     void cleanupTestCase();
     void init();
@@ -55,7 +55,7 @@ private slots:
     void testZeroSizeRect();
     void testLargeRect();
 
-private:
+  private:
     QGraphicsScene* scene;
     QGraphicsView* view;
     EditableRectItem* item;
@@ -64,21 +64,18 @@ private:
     void simulateMouseMove(const QPointF& fromPos, const QPointF& toPos);
 };
 
-void TestEditableRectItem::initTestCase()
-{
+void TestEditableRectItem::initTestCase() {
     // Called once before all tests
     scene = nullptr;
     view = nullptr;
     item = nullptr;
 }
 
-void TestEditableRectItem::cleanupTestCase()
-{
+void TestEditableRectItem::cleanupTestCase() {
     // Called once after all tests
 }
 
-void TestEditableRectItem::init()
-{
+void TestEditableRectItem::init() {
     // Called before each test
     scene = new QGraphicsScene();
     view = new QGraphicsView(scene);
@@ -87,17 +84,15 @@ void TestEditableRectItem::init()
     QTest::qWaitForWindowExposed(view);
 }
 
-void TestEditableRectItem::cleanup()
-{
+void TestEditableRectItem::cleanup() {
     // Called after each test
-    delete view;  // This also deletes the scene and items
+    delete view; // This also deletes the scene and items
     view = nullptr;
     scene = nullptr;
     item = nullptr;
 }
 
-void TestEditableRectItem::testConstruction()
-{
+void TestEditableRectItem::testConstruction() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -106,15 +101,10 @@ void TestEditableRectItem::testConstruction()
     QCOMPARE(item->pos(), QPointF(0, 0));
 }
 
-void TestEditableRectItem::testConstructionWithDifferentSizes()
-{
+void TestEditableRectItem::testConstructionWithDifferentSizes() {
     // Test various sizes
-    QList<QRectF> testRects = {
-        QRectF(0, 0, 50, 50),
-        QRectF(0, 0, 200, 150),
-        QRectF(0, 0, 10, 500),
-        QRectF(0, 0, 500, 10)
-    };
+    QList<QRectF> testRects = {QRectF(0, 0, 50, 50), QRectF(0, 0, 200, 150), QRectF(0, 0, 10, 500),
+                               QRectF(0, 0, 500, 10)};
 
     for (const auto& rect : testRects) {
         EditableRectItem* testItem = new EditableRectItem(rect);
@@ -127,8 +117,7 @@ void TestEditableRectItem::testConstructionWithDifferentSizes()
     }
 }
 
-void TestEditableRectItem::testConstructionWithOffset()
-{
+void TestEditableRectItem::testConstructionWithOffset() {
     QRectF rect(50, 75, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -137,8 +126,7 @@ void TestEditableRectItem::testConstructionWithOffset()
     QCOMPARE(item->pos(), rect.topLeft());
 }
 
-void TestEditableRectItem::testBoundingRect()
-{
+void TestEditableRectItem::testBoundingRect() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -148,8 +136,7 @@ void TestEditableRectItem::testBoundingRect()
     QVERIFY(bounds.height() > 0);
 }
 
-void TestEditableRectItem::testBoundingRectIncludesHandles()
-{
+void TestEditableRectItem::testBoundingRectIncludesHandles() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -161,8 +148,7 @@ void TestEditableRectItem::testBoundingRectIncludesHandles()
     QVERIFY(bounds.height() >= rect.height());
 }
 
-void TestEditableRectItem::testIsSelectable()
-{
+void TestEditableRectItem::testIsSelectable() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -170,8 +156,7 @@ void TestEditableRectItem::testIsSelectable()
     QVERIFY(item->flags() & QGraphicsItem::ItemIsSelectable);
 }
 
-void TestEditableRectItem::testInitialPosition()
-{
+void TestEditableRectItem::testInitialPosition() {
     QRectF rect(100, 150, 200, 250);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -179,8 +164,7 @@ void TestEditableRectItem::testInitialPosition()
     QCOMPARE(item->pos(), QPointF(100, 150));
 }
 
-void TestEditableRectItem::testPaintingDoesNotCrash()
-{
+void TestEditableRectItem::testPaintingDoesNotCrash() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -195,8 +179,7 @@ void TestEditableRectItem::testPaintingDoesNotCrash()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::testScaleAwareHandles()
-{
+void TestEditableRectItem::testScaleAwareHandles() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -215,8 +198,7 @@ void TestEditableRectItem::testScaleAwareHandles()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::simulateMousePress(const QPointF& pos)
-{
+void TestEditableRectItem::simulateMousePress(const QPointF& pos) {
     QGraphicsSceneMouseEvent pressEvent(QEvent::GraphicsSceneMousePress);
     pressEvent.setPos(pos);
     pressEvent.setButton(Qt::LeftButton);
@@ -224,8 +206,7 @@ void TestEditableRectItem::simulateMousePress(const QPointF& pos)
     scene->sendEvent(item, &pressEvent);
 }
 
-void TestEditableRectItem::simulateMouseMove(const QPointF& fromPos, const QPointF& toPos)
-{
+void TestEditableRectItem::simulateMouseMove(const QPointF& fromPos, const QPointF& toPos) {
     QGraphicsSceneMouseEvent moveEvent(QEvent::GraphicsSceneMouseMove);
     moveEvent.setLastPos(fromPos);
     moveEvent.setPos(toPos);
@@ -234,8 +215,7 @@ void TestEditableRectItem::simulateMouseMove(const QPointF& fromPos, const QPoin
     scene->sendEvent(item, &moveEvent);
 }
 
-void TestEditableRectItem::testMousePressOnTopLeftHandle()
-{
+void TestEditableRectItem::testMousePressOnTopLeftHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -247,8 +227,7 @@ void TestEditableRectItem::testMousePressOnTopLeftHandle()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::testMousePressOnTopRightHandle()
-{
+void TestEditableRectItem::testMousePressOnTopRightHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -259,8 +238,7 @@ void TestEditableRectItem::testMousePressOnTopRightHandle()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::testMousePressOnBottomLeftHandle()
-{
+void TestEditableRectItem::testMousePressOnBottomLeftHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -271,8 +249,7 @@ void TestEditableRectItem::testMousePressOnBottomLeftHandle()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::testMousePressOnBottomRightHandle()
-{
+void TestEditableRectItem::testMousePressOnBottomRightHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -283,8 +260,7 @@ void TestEditableRectItem::testMousePressOnBottomRightHandle()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::testMousePressOnRectangleBody()
-{
+void TestEditableRectItem::testMousePressOnRectangleBody() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -295,8 +271,7 @@ void TestEditableRectItem::testMousePressOnRectangleBody()
     QVERIFY(true);
 }
 
-void TestEditableRectItem::testResizeTopLeftHandle()
-{
+void TestEditableRectItem::testResizeTopLeftHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -315,8 +290,7 @@ void TestEditableRectItem::testResizeTopLeftHandle()
     QVERIFY(!TestHelpers::rectFuzzyCompare(initialBounds, newBounds, 1.0));
 }
 
-void TestEditableRectItem::testResizeTopRightHandle()
-{
+void TestEditableRectItem::testResizeTopRightHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -330,8 +304,7 @@ void TestEditableRectItem::testResizeTopRightHandle()
     QVERIFY(!TestHelpers::rectFuzzyCompare(initialBounds, newBounds, 1.0));
 }
 
-void TestEditableRectItem::testResizeBottomLeftHandle()
-{
+void TestEditableRectItem::testResizeBottomLeftHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -345,8 +318,7 @@ void TestEditableRectItem::testResizeBottomLeftHandle()
     QVERIFY(!TestHelpers::rectFuzzyCompare(initialBounds, newBounds, 1.0));
 }
 
-void TestEditableRectItem::testResizeBottomRightHandle()
-{
+void TestEditableRectItem::testResizeBottomRightHandle() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -360,8 +332,7 @@ void TestEditableRectItem::testResizeBottomRightHandle()
     QVERIFY(!TestHelpers::rectFuzzyCompare(initialBounds, newBounds, 1.0));
 }
 
-void TestEditableRectItem::testResizePreservesOppositeCorner()
-{
+void TestEditableRectItem::testResizePreservesOppositeCorner() {
     QRectF rect(0, 0, 100, 100);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -377,8 +348,7 @@ void TestEditableRectItem::testResizePreservesOppositeCorner()
     QVERIFY(newBounds.height() < 100);
 }
 
-void TestEditableRectItem::testNegativeSizeRect()
-{
+void TestEditableRectItem::testNegativeSizeRect() {
     // Test with a rect that has negative width/height (will be normalized by Qt)
     QRectF rect(100, 100, -50, -50);
     item = new EditableRectItem(rect.normalized());
@@ -390,8 +360,7 @@ void TestEditableRectItem::testNegativeSizeRect()
     QVERIFY(bounds.height() > 0);
 }
 
-void TestEditableRectItem::testZeroSizeRect()
-{
+void TestEditableRectItem::testZeroSizeRect() {
     QRectF rect(50, 50, 0, 0);
     item = new EditableRectItem(rect);
     scene->addItem(item);
@@ -403,8 +372,7 @@ void TestEditableRectItem::testZeroSizeRect()
     QVERIFY(bounds.height() >= 0);
 }
 
-void TestEditableRectItem::testLargeRect()
-{
+void TestEditableRectItem::testLargeRect() {
     QRectF rect(0, 0, 10000, 10000);
     item = new EditableRectItem(rect);
     scene->addItem(item);

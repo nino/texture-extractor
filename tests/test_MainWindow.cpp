@@ -15,7 +15,7 @@
 class TestMainWindow : public QObject {
     Q_OBJECT
 
-private slots:
+  private slots:
     void initTestCase();
     void cleanupTestCase();
     void init();
@@ -44,14 +44,13 @@ private slots:
     void testOpenFileCreatesDocumentWindow();
     void testOpenFileMultiple();
 
-private:
+  private:
     MainWindow* mainWindow;
     QString testImagePath1;
     QString testImagePath2;
 };
 
-void TestMainWindow::initTestCase()
-{
+void TestMainWindow::initTestCase() {
     // Create test images
     testImagePath1 = TestHelpers::createTempImageFile(300, 300, "PNG");
     testImagePath2 = TestHelpers::createTempImageFile(400, 400, "PNG");
@@ -60,8 +59,7 @@ void TestMainWindow::initTestCase()
     QVERIFY(!testImagePath2.isEmpty());
 }
 
-void TestMainWindow::cleanupTestCase()
-{
+void TestMainWindow::cleanupTestCase() {
     // Clean up test images
     if (!testImagePath1.isEmpty()) {
         QFile::remove(testImagePath1);
@@ -71,13 +69,11 @@ void TestMainWindow::cleanupTestCase()
     }
 }
 
-void TestMainWindow::init()
-{
+void TestMainWindow::init() {
     mainWindow = new MainWindow();
 }
 
-void TestMainWindow::cleanup()
-{
+void TestMainWindow::cleanup() {
     // Close and delete all child DocumentWindows
     QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
     for (DocumentWindow* doc : docWindows) {
@@ -90,25 +86,21 @@ void TestMainWindow::cleanup()
     mainWindow = nullptr;
 }
 
-void TestMainWindow::testConstruction()
-{
+void TestMainWindow::testConstruction() {
     QVERIFY(mainWindow != nullptr);
 }
 
-void TestMainWindow::testMenuBarExists()
-{
+void TestMainWindow::testMenuBarExists() {
     QMenuBar* menuBar = mainWindow->menuBar();
     QVERIFY(menuBar != nullptr);
 }
 
-void TestMainWindow::testFileMenuExists()
-{
+void TestMainWindow::testFileMenuExists() {
     QMenu* fileMenu = mainWindow->findChild<QMenu*>();
     QVERIFY(fileMenu != nullptr);
 }
 
-void TestMainWindow::testOpenActionExists()
-{
+void TestMainWindow::testOpenActionExists() {
     QAction* openAction = nullptr;
 
     // Find the open action
@@ -123,8 +115,7 @@ void TestMainWindow::testOpenActionExists()
     QVERIFY(openAction != nullptr);
 }
 
-void TestMainWindow::testOpenActionProperties()
-{
+void TestMainWindow::testOpenActionProperties() {
     QList<QAction*> actions = mainWindow->findChildren<QAction*>();
     QAction* openAction = nullptr;
 
@@ -140,8 +131,7 @@ void TestMainWindow::testOpenActionProperties()
     QVERIFY(!openAction->statusTip().isEmpty());
 }
 
-void TestMainWindow::testOpenActionShortcut()
-{
+void TestMainWindow::testOpenActionShortcut() {
     QList<QAction*> actions = mainWindow->findChildren<QAction*>();
     QAction* openAction = nullptr;
 
@@ -170,8 +160,7 @@ void TestMainWindow::testOpenActionShortcut()
     QVERIFY(hasOpenShortcut);
 }
 
-void TestMainWindow::testFileMenuContainsOpenAction()
-{
+void TestMainWindow::testFileMenuContainsOpenAction() {
     QMenu* fileMenu = mainWindow->findChild<QMenu*>();
     QVERIFY(fileMenu != nullptr);
 
@@ -190,20 +179,18 @@ void TestMainWindow::testFileMenuContainsOpenAction()
     QVERIFY(foundOpen);
 }
 
-void TestMainWindow::testAcceptsDrops()
-{
+void TestMainWindow::testAcceptsDrops() {
     QVERIFY(mainWindow->acceptDrops());
 }
 
-void TestMainWindow::testDragEnterWithUrls()
-{
+void TestMainWindow::testDragEnterWithUrls() {
     QMimeData* mimeData = new QMimeData();
     QList<QUrl> urls;
     urls << QUrl::fromLocalFile(testImagePath1);
     mimeData->setUrls(urls);
 
-    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
-                         Qt::LeftButton, Qt::NoModifier);
+    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
+                          Qt::NoModifier);
 
     // Send the event
     QCoreApplication::sendEvent(mainWindow, &event);
@@ -214,13 +201,12 @@ void TestMainWindow::testDragEnterWithUrls()
     delete mimeData;
 }
 
-void TestMainWindow::testDragEnterWithoutUrls()
-{
+void TestMainWindow::testDragEnterWithoutUrls() {
     QMimeData* mimeData = new QMimeData();
     mimeData->setText("Some text");
 
-    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
-                         Qt::LeftButton, Qt::NoModifier);
+    QDragEnterEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
+                          Qt::NoModifier);
 
     // Send the event
     QCoreApplication::sendEvent(mainWindow, &event);
@@ -231,16 +217,15 @@ void TestMainWindow::testDragEnterWithoutUrls()
     delete mimeData;
 }
 
-void TestMainWindow::testDropEventWithLocalFile()
-{
+void TestMainWindow::testDropEventWithLocalFile() {
     QMimeData* mimeData = new QMimeData();
     QList<QUrl> urls;
     urls << QUrl::fromLocalFile(testImagePath1);
     mimeData->setUrls(urls);
 
     // First send drag enter event
-    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData,
-                              Qt::LeftButton, Qt::NoModifier);
+    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
+                               Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &enterEvent);
     QApplication::processEvents();
 
@@ -248,8 +233,7 @@ void TestMainWindow::testDropEventWithLocalFile()
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
     // Now send the drop event
-    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
-                    Qt::LeftButton, Qt::NoModifier);
+    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton, Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &event);
 
     // Process events to allow window creation
@@ -264,8 +248,7 @@ void TestMainWindow::testDropEventWithLocalFile()
     delete mimeData;
 }
 
-void TestMainWindow::testDropEventWithMultipleFiles()
-{
+void TestMainWindow::testDropEventWithMultipleFiles() {
     QMimeData* mimeData = new QMimeData();
     QList<QUrl> urls;
     urls << QUrl::fromLocalFile(testImagePath1);
@@ -273,16 +256,15 @@ void TestMainWindow::testDropEventWithMultipleFiles()
     mimeData->setUrls(urls);
 
     // First send drag enter event
-    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData,
-                              Qt::LeftButton, Qt::NoModifier);
+    QDragEnterEvent enterEvent(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton,
+                               Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &enterEvent);
     QApplication::processEvents();
 
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
     // Now send drop event
-    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData,
-                    Qt::LeftButton, Qt::NoModifier);
+    QDropEvent event(QPoint(100, 100), Qt::CopyAction, mimeData, Qt::LeftButton, Qt::NoModifier);
     QCoreApplication::sendEvent(mainWindow, &event);
 
     // Process events to allow window creation
@@ -298,8 +280,7 @@ void TestMainWindow::testDropEventWithMultipleFiles()
     delete mimeData;
 }
 
-void TestMainWindow::testOpenFileSingle()
-{
+void TestMainWindow::testOpenFileSingle() {
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
     mainWindow->openFile(testImagePath1);
@@ -309,8 +290,7 @@ void TestMainWindow::testOpenFileSingle()
     QVERIFY(afterCount > beforeCount);
 }
 
-void TestMainWindow::testOpenFileCreatesDocumentWindow()
-{
+void TestMainWindow::testOpenFileCreatesDocumentWindow() {
     mainWindow->openFile(testImagePath1);
 
     QList<DocumentWindow*> docWindows = mainWindow->findChildren<DocumentWindow*>();
@@ -318,11 +298,10 @@ void TestMainWindow::testOpenFileCreatesDocumentWindow()
 
     // The last created window should have our file path as title
     DocumentWindow* lastDoc = docWindows.last();
-    QCOMPARE(lastDoc->get_document_title(), testImagePath1);
+    QCOMPARE(lastDoc->getDocumentTitle(), testImagePath1);
 }
 
-void TestMainWindow::testOpenFileMultiple()
-{
+void TestMainWindow::testOpenFileMultiple() {
     int beforeCount = mainWindow->findChildren<DocumentWindow*>().size();
 
     mainWindow->openFile(testImagePath1);

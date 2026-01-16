@@ -10,7 +10,7 @@
 class TestSourceImageView : public QObject {
     Q_OBJECT
 
-private slots:
+  private slots:
     void initTestCase();
     void cleanupTestCase();
     void init();
@@ -38,25 +38,22 @@ private slots:
     void testWithSceneAndContent();
     void testPanningWithContent();
 
-private:
+  private:
     SourceImageView* view;
     QGraphicsScene* scene;
     QTransform getViewTransform();
 };
 
-void TestSourceImageView::initTestCase()
-{
+void TestSourceImageView::initTestCase() {
     view = nullptr;
     scene = nullptr;
 }
 
-void TestSourceImageView::cleanupTestCase()
-{
+void TestSourceImageView::cleanupTestCase() {
     // Called after all tests
 }
 
-void TestSourceImageView::init()
-{
+void TestSourceImageView::init() {
     // Create fresh instances for each test
     view = new SourceImageView();
     scene = new QGraphicsScene();
@@ -66,48 +63,42 @@ void TestSourceImageView::init()
     QTest::qWaitForWindowExposed(view);
 }
 
-void TestSourceImageView::cleanup()
-{
+void TestSourceImageView::cleanup() {
     delete view;
     view = nullptr;
     delete scene;
     scene = nullptr;
 }
 
-QTransform TestSourceImageView::getViewTransform()
-{
+QTransform TestSourceImageView::getViewTransform() {
     return view->transform();
 }
 
-void TestSourceImageView::testConstruction()
-{
+void TestSourceImageView::testConstruction() {
     QVERIFY(view != nullptr);
     QVERIFY(view->scene() == scene);
 }
 
-void TestSourceImageView::testInitialDragMode()
-{
+void TestSourceImageView::testInitialDragMode() {
     QCOMPARE(view->dragMode(), QGraphicsView::NoDrag);
 }
 
-void TestSourceImageView::testLeftClickPassthrough()
-{
+void TestSourceImageView::testLeftClickPassthrough() {
     // Left click should not change drag mode
     QPointF scenePos(100, 100);
     QPoint viewPos = view->mapFromScene(scenePos);
 
-    TestHelpers::simulateMousePress(view->viewport(), Qt::LeftButton,
-                                    viewPos, view->viewport()->mapToGlobal(viewPos));
+    TestHelpers::simulateMousePress(view->viewport(), Qt::LeftButton, viewPos,
+                                    view->viewport()->mapToGlobal(viewPos));
 
     // Drag mode should still be NoDrag
     QCOMPARE(view->dragMode(), QGraphicsView::NoDrag);
 
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::LeftButton,
-                                      viewPos, view->viewport()->mapToGlobal(viewPos));
+    TestHelpers::simulateMouseRelease(view->viewport(), Qt::LeftButton, viewPos,
+                                      view->viewport()->mapToGlobal(viewPos));
 }
 
-void TestSourceImageView::testRightClickStartsDrag()
-{
+void TestSourceImageView::testRightClickStartsDrag() {
     QPointF scenePos(100, 100);
     QPoint viewPos = view->mapFromScene(scenePos);
 
@@ -115,75 +106,70 @@ void TestSourceImageView::testRightClickStartsDrag()
     QCOMPARE(view->dragMode(), QGraphicsView::NoDrag);
 
     // Right click should change drag mode
-    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton,
-                                    viewPos, view->viewport()->mapToGlobal(viewPos));
+    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton, viewPos,
+                                    view->viewport()->mapToGlobal(viewPos));
 
     // Drag mode should now be ScrollHandDrag
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
     // Clean up
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton,
-                                      viewPos, view->viewport()->mapToGlobal(viewPos));
+    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton, viewPos,
+                                      view->viewport()->mapToGlobal(viewPos));
 }
 
-void TestSourceImageView::testRightClickChangesDragMode()
-{
+void TestSourceImageView::testRightClickChangesDragMode() {
     QCOMPARE(view->dragMode(), QGraphicsView::NoDrag);
 
     QPoint pos(100, 100);
-    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton,
-                                    pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton, pos,
+                                    view->viewport()->mapToGlobal(pos));
 
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton,
-                                      pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton, pos,
+                                      view->viewport()->mapToGlobal(pos));
 }
 
-void TestSourceImageView::testRightClickReleasesRestoresDragMode()
-{
+void TestSourceImageView::testRightClickReleasesRestoresDragMode() {
     QPoint pos(100, 100);
 
-    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton,
-                                    pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton, pos,
+                                    view->viewport()->mapToGlobal(pos));
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton,
-                                      pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton, pos,
+                                      view->viewport()->mapToGlobal(pos));
 
     // Should be back to NoDrag
     QCOMPARE(view->dragMode(), QGraphicsView::NoDrag);
 }
 
-void TestSourceImageView::testRightClickDragSequence()
-{
+void TestSourceImageView::testRightClickDragSequence() {
     QPoint startPos(100, 100);
     QPoint endPos(200, 200);
 
     // Press
-    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton,
-                                    startPos, view->viewport()->mapToGlobal(startPos));
+    TestHelpers::simulateMousePress(view->viewport(), Qt::RightButton, startPos,
+                                    view->viewport()->mapToGlobal(startPos));
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
     // Move
-    TestHelpers::simulateMouseMove(view->viewport(), endPos,
-                                   view->viewport()->mapToGlobal(endPos),
+    TestHelpers::simulateMouseMove(view->viewport(), endPos, view->viewport()->mapToGlobal(endPos),
                                    Qt::RightButton);
     QCOMPARE(view->dragMode(), QGraphicsView::ScrollHandDrag);
 
     // Release
-    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton,
-                                      endPos, view->viewport()->mapToGlobal(endPos));
+    TestHelpers::simulateMouseRelease(view->viewport(), Qt::RightButton, endPos,
+                                      view->viewport()->mapToGlobal(endPos));
     QCOMPARE(view->dragMode(), QGraphicsView::NoDrag);
 }
 
-void TestSourceImageView::testWheelZoomIn()
-{
+void TestSourceImageView::testWheelZoomIn() {
     QTransform initialTransform = getViewTransform();
 
-    QPoint pos(400, 300);  // Center of view
-    TestHelpers::simulateWheelEvent(view->viewport(), 120,  // Positive = zoom in
-                                   pos, view->viewport()->mapToGlobal(pos));
+    QPoint pos(400, 300);                                  // Center of view
+    TestHelpers::simulateWheelEvent(view->viewport(), 120, // Positive = zoom in
+                                    pos, view->viewport()->mapToGlobal(pos));
 
     QTransform newTransform = getViewTransform();
 
@@ -192,13 +178,12 @@ void TestSourceImageView::testWheelZoomIn()
     QVERIFY(newTransform.m22() > initialTransform.m22());
 }
 
-void TestSourceImageView::testWheelZoomOut()
-{
+void TestSourceImageView::testWheelZoomOut() {
     QTransform initialTransform = getViewTransform();
 
     QPoint pos(400, 300);
-    TestHelpers::simulateWheelEvent(view->viewport(), -120,  // Negative = zoom out
-                                   pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateWheelEvent(view->viewport(), -120, // Negative = zoom out
+                                    pos, view->viewport()->mapToGlobal(pos));
 
     QTransform newTransform = getViewTransform();
 
@@ -207,8 +192,7 @@ void TestSourceImageView::testWheelZoomOut()
     QVERIFY(newTransform.m22() < initialTransform.m22());
 }
 
-void TestSourceImageView::testMultipleZoomOperations()
-{
+void TestSourceImageView::testMultipleZoomOperations() {
     QTransform initialTransform = getViewTransform();
     qreal initialScale = initialTransform.m11();
 
@@ -216,8 +200,8 @@ void TestSourceImageView::testMultipleZoomOperations()
 
     // Zoom in multiple times
     for (int i = 0; i < 3; ++i) {
-        TestHelpers::simulateWheelEvent(view->viewport(), 120,
-                                       pos, view->viewport()->mapToGlobal(pos));
+        TestHelpers::simulateWheelEvent(view->viewport(), 120, pos,
+                                        view->viewport()->mapToGlobal(pos));
     }
 
     QTransform zoomedInTransform = getViewTransform();
@@ -225,21 +209,19 @@ void TestSourceImageView::testMultipleZoomOperations()
 
     // Zoom out multiple times
     for (int i = 0; i < 6; ++i) {
-        TestHelpers::simulateWheelEvent(view->viewport(), -120,
-                                       pos, view->viewport()->mapToGlobal(pos));
+        TestHelpers::simulateWheelEvent(view->viewport(), -120, pos,
+                                        view->viewport()->mapToGlobal(pos));
     }
 
     QTransform zoomedOutTransform = getViewTransform();
     QVERIFY(zoomedOutTransform.m11() < initialScale);
 }
 
-void TestSourceImageView::testZoomChangesTransform()
-{
+void TestSourceImageView::testZoomChangesTransform() {
     QTransform before = getViewTransform();
 
     QPoint pos(400, 300);
-    TestHelpers::simulateWheelEvent(view->viewport(), 120,
-                                   pos, view->viewport()->mapToGlobal(pos));
+    TestHelpers::simulateWheelEvent(view->viewport(), 120, pos, view->viewport()->mapToGlobal(pos));
 
     QTransform after = getViewTransform();
 
@@ -247,15 +229,13 @@ void TestSourceImageView::testZoomChangesTransform()
     QVERIFY(before != after);
 }
 
-void TestSourceImageView::testWithScene()
-{
+void TestSourceImageView::testWithScene() {
     // Scene is already set in init()
     QVERIFY(view->scene() == scene);
     QVERIFY(scene != nullptr);
 }
 
-void TestSourceImageView::testWithSceneAndContent()
-{
+void TestSourceImageView::testWithSceneAndContent() {
     // Add some content to the scene
     QImage testImage = TestHelpers::createTestImage(500, 500);
     QGraphicsPixmapItem* pixmapItem = scene->addPixmap(QPixmap::fromImage(testImage));
@@ -268,11 +248,10 @@ void TestSourceImageView::testWithSceneAndContent()
     view->viewport()->update();
     QTest::qWait(50);
 
-    QVERIFY(true);  // If we get here without crashing, test passes
+    QVERIFY(true); // If we get here without crashing, test passes
 }
 
-void TestSourceImageView::testPanningWithContent()
-{
+void TestSourceImageView::testPanningWithContent() {
     // Add content to make panning visible
     QImage testImage = TestHelpers::createTestImage(1000, 1000);
     scene->addPixmap(QPixmap::fromImage(testImage));

@@ -99,3 +99,27 @@ The tests use a shared test helper library (`test_helpers.h/cpp`) that provides:
 ### Requirements
 
 Tests require Qt Test module (Qt::Test), which is automatically included when building the project.
+
+## Coding Standards
+
+This project follows specific coding standards to maintain consistency and clarity. See [CLAUDE.md](CLAUDE.md) for full details.
+
+### Key Rules
+
+**Member Access**: All member variable and member function access MUST use explicit `this->` prefix.
+
+```cpp
+// ✅ CORRECT
+void MyClass::updateName(const QString& name) {
+    this->name = name;
+    this->refreshUI();
+}
+
+// ❌ INCORRECT
+void MyClass::updateName(const QString& name) {
+    name = name;  // Bug: shadows parameter!
+    refreshUI();  // Not clear this is a member
+}
+```
+
+**Headers**: Use `.hpp` extension and `#pragma once` for all C++ headers.

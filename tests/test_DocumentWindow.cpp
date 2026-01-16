@@ -10,7 +10,7 @@
 class TestDocumentWindow : public QObject {
     Q_OBJECT
 
-private slots:
+  private slots:
     void initTestCase();
     void cleanupTestCase();
     void init();
@@ -36,33 +36,29 @@ private slots:
     void testPhotoViewGraphicsScene();
     void testPhotoViewSceneContent();
 
-private:
+  private:
     DocumentWindow* docWindow;
     QString testImagePath;
 };
 
-void TestDocumentWindow::initTestCase()
-{
+void TestDocumentWindow::initTestCase() {
     // Create a test image file that persists across tests
     testImagePath = TestHelpers::createTempImageFile(400, 300, "PNG");
     QVERIFY(!testImagePath.isEmpty());
 }
 
-void TestDocumentWindow::cleanupTestCase()
-{
+void TestDocumentWindow::cleanupTestCase() {
     // Clean up test image
     if (!testImagePath.isEmpty()) {
         QFile::remove(testImagePath);
     }
 }
 
-void TestDocumentWindow::init()
-{
+void TestDocumentWindow::init() {
     docWindow = new DocumentWindow();
 }
 
-void TestDocumentWindow::cleanup()
-{
+void TestDocumentWindow::cleanup() {
     if (docWindow) {
         // Don't use deleteLater since we're in tests
         docWindow->setAttribute(Qt::WA_DeleteOnClose, false);
@@ -71,18 +67,15 @@ void TestDocumentWindow::cleanup()
     }
 }
 
-void TestDocumentWindow::testDocumentWindowConstruction()
-{
+void TestDocumentWindow::testDocumentWindowConstruction() {
     QVERIFY(docWindow != nullptr);
 }
 
-void TestDocumentWindow::testDocumentWindowInitialTitle()
-{
+void TestDocumentWindow::testDocumentWindowInitialTitle() {
     QCOMPARE(docWindow->windowTitle(), QString("New Document"));
 }
 
-void TestDocumentWindow::testDocumentWindowInitialCentralWidget()
-{
+void TestDocumentWindow::testDocumentWindowInitialCentralWidget() {
     QWidget* centralWidget = docWindow->centralWidget();
     QVERIFY(centralWidget != nullptr);
 
@@ -92,41 +85,36 @@ void TestDocumentWindow::testDocumentWindowInitialCentralWidget()
     QCOMPARE(label->text(), QString("Loading..."));
 }
 
-void TestDocumentWindow::testSetDocumentTitle()
-{
+void TestDocumentWindow::testSetDocumentTitle() {
     QString title = "Test Document";
-    docWindow->set_document_title(title);
+    docWindow->setDocumentTitle(title);
 
-    QCOMPARE(docWindow->get_document_title(), title);
+    QCOMPARE(docWindow->getDocumentTitle(), title);
 }
 
-void TestDocumentWindow::testGetDocumentTitle()
-{
+void TestDocumentWindow::testGetDocumentTitle() {
     // Initially should be empty
-    QVERIFY(docWindow->get_document_title().isEmpty());
+    QVERIFY(docWindow->getDocumentTitle().isEmpty());
 
     QString title = "My Document";
-    docWindow->set_document_title(title);
+    docWindow->setDocumentTitle(title);
 
-    QCOMPARE(docWindow->get_document_title(), title);
+    QCOMPARE(docWindow->getDocumentTitle(), title);
 }
 
-void TestDocumentWindow::testSetDocumentTitleChangesWindowTitle()
-{
+void TestDocumentWindow::testSetDocumentTitleChangesWindowTitle() {
     QString title = "Window Title Test";
-    docWindow->set_document_title(title);
+    docWindow->setDocumentTitle(title);
 
     QCOMPARE(docWindow->windowTitle(), title);
 }
 
-void TestDocumentWindow::testDeleteOnCloseAttribute()
-{
+void TestDocumentWindow::testDeleteOnCloseAttribute() {
     QVERIFY(docWindow->testAttribute(Qt::WA_DeleteOnClose));
 }
 
-void TestDocumentWindow::testSetDocumentTitleWithValidImage()
-{
-    docWindow->set_document_title(testImagePath);
+void TestDocumentWindow::testSetDocumentTitleWithValidImage() {
+    docWindow->setDocumentTitle(testImagePath);
 
     // The central widget should now be a PhotoView
     QWidget* centralWidget = docWindow->centralWidget();
@@ -134,30 +122,27 @@ void TestDocumentWindow::testSetDocumentTitleWithValidImage()
 
     // Should no longer be the loading label
     QLabel* label = qobject_cast<QLabel*>(centralWidget);
-    QVERIFY(label == nullptr);  // Should not be a label anymore
+    QVERIFY(label == nullptr); // Should not be a label anymore
 }
 
-void TestDocumentWindow::testSetDocumentTitleMultipleTimes()
-{
-    docWindow->set_document_title("First Title");
-    QCOMPARE(docWindow->get_document_title(), QString("First Title"));
+void TestDocumentWindow::testSetDocumentTitleMultipleTimes() {
+    docWindow->setDocumentTitle("First Title");
+    QCOMPARE(docWindow->getDocumentTitle(), QString("First Title"));
 
-    docWindow->set_document_title("Second Title");
-    QCOMPARE(docWindow->get_document_title(), QString("Second Title"));
+    docWindow->setDocumentTitle("Second Title");
+    QCOMPARE(docWindow->getDocumentTitle(), QString("Second Title"));
 
-    docWindow->set_document_title(testImagePath);
-    QCOMPARE(docWindow->get_document_title(), testImagePath);
+    docWindow->setDocumentTitle(testImagePath);
+    QCOMPARE(docWindow->getDocumentTitle(), testImagePath);
 }
 
-void TestDocumentWindow::testPhotoViewConstruction()
-{
+void TestDocumentWindow::testPhotoViewConstruction() {
     PhotoView* view = new PhotoView(testImagePath);
     QVERIFY(view != nullptr);
     delete view;
 }
 
-void TestDocumentWindow::testPhotoViewWithValidImage()
-{
+void TestDocumentWindow::testPhotoViewWithValidImage() {
     PhotoView* view = new PhotoView(testImagePath);
     QVERIFY(view != nullptr);
 
@@ -168,8 +153,7 @@ void TestDocumentWindow::testPhotoViewWithValidImage()
     delete view;
 }
 
-void TestDocumentWindow::testPhotoViewWithInvalidImage()
-{
+void TestDocumentWindow::testPhotoViewWithInvalidImage() {
     QString invalidPath = "/nonexistent/path/to/image.png";
     PhotoView* view = new PhotoView(invalidPath);
 
@@ -179,8 +163,7 @@ void TestDocumentWindow::testPhotoViewWithInvalidImage()
     delete view;
 }
 
-void TestDocumentWindow::testPhotoViewLayout()
-{
+void TestDocumentWindow::testPhotoViewLayout() {
     PhotoView* view = new PhotoView(testImagePath);
 
     QLayout* layout = view->layout();
@@ -193,8 +176,7 @@ void TestDocumentWindow::testPhotoViewLayout()
     delete view;
 }
 
-void TestDocumentWindow::testPhotoViewHasBothViews()
-{
+void TestDocumentWindow::testPhotoViewHasBothViews() {
     PhotoView* view = new PhotoView(testImagePath);
 
     // Find child views
@@ -207,8 +189,7 @@ void TestDocumentWindow::testPhotoViewHasBothViews()
     delete view;
 }
 
-void TestDocumentWindow::testPhotoViewGraphicsScene()
-{
+void TestDocumentWindow::testPhotoViewGraphicsScene() {
     PhotoView* view = new PhotoView(testImagePath);
 
     SourceImageView* sourceView = view->findChild<SourceImageView*>();
@@ -220,8 +201,7 @@ void TestDocumentWindow::testPhotoViewGraphicsScene()
     delete view;
 }
 
-void TestDocumentWindow::testPhotoViewSceneContent()
-{
+void TestDocumentWindow::testPhotoViewSceneContent() {
     PhotoView* view = new PhotoView(testImagePath);
 
     SourceImageView* sourceView = view->findChild<SourceImageView*>();
@@ -232,7 +212,7 @@ void TestDocumentWindow::testPhotoViewSceneContent()
 
     // Scene should have items (MovableEllipse, EditableRectItem, and image)
     QList<QGraphicsItem*> items = scene->items();
-    QVERIFY(items.size() >= 2);  // At least ellipse and rect
+    QVERIFY(items.size() >= 2); // At least ellipse and rect
 
     // Should have 3 items: ellipse, editable rect, and pixmap
     QCOMPARE(items.size(), 3);

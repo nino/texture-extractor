@@ -38,8 +38,8 @@ QString createTempImageFile(int width, int height, const QString& format = "PNG"
  * @param pos Position in widget coordinates
  * @param globalPos Global position
  */
-void simulateMousePress(QWidget* widget, Qt::MouseButton button,
-                       const QPoint& pos, const QPoint& globalPos);
+void simulateMousePress(QWidget* widget, Qt::MouseButton button, const QPoint& pos,
+                        const QPoint& globalPos);
 
 /**
  * Simulates a mouse move event
@@ -48,8 +48,8 @@ void simulateMousePress(QWidget* widget, Qt::MouseButton button,
  * @param globalPos Global position
  * @param buttons Currently pressed buttons
  */
-void simulateMouseMove(QWidget* widget, const QPoint& pos,
-                      const QPoint& globalPos, Qt::MouseButtons buttons);
+void simulateMouseMove(QWidget* widget, const QPoint& pos, const QPoint& globalPos,
+                       Qt::MouseButtons buttons);
 
 /**
  * Simulates a mouse release event
@@ -58,8 +58,8 @@ void simulateMouseMove(QWidget* widget, const QPoint& pos,
  * @param pos Position in widget coordinates
  * @param globalPos Global position
  */
-void simulateMouseRelease(QWidget* widget, Qt::MouseButton button,
-                         const QPoint& pos, const QPoint& globalPos);
+void simulateMouseRelease(QWidget* widget, Qt::MouseButton button, const QPoint& pos,
+                          const QPoint& globalPos);
 
 /**
  * Simulates a mouse wheel event
@@ -68,8 +68,7 @@ void simulateMouseRelease(QWidget* widget, Qt::MouseButton button,
  * @param pos Position in widget coordinates
  * @param globalPos Global position
  */
-void simulateWheelEvent(QWidget* widget, int delta,
-                       const QPoint& pos, const QPoint& globalPos);
+void simulateWheelEvent(QWidget* widget, int delta, const QPoint& pos, const QPoint& globalPos);
 
 /**
  * Simulates a click and drag operation
@@ -78,8 +77,7 @@ void simulateWheelEvent(QWidget* widget, int delta,
  * @param from Starting position
  * @param to Ending position
  */
-void simulateDrag(QWidget* widget, Qt::MouseButton button,
-                 const QPoint& from, const QPoint& to);
+void simulateDrag(QWidget* widget, Qt::MouseButton button, const QPoint& from, const QPoint& to);
 
 /**
  * Compares two QRectF objects with a tolerance
