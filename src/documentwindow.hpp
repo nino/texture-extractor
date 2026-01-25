@@ -8,35 +8,35 @@
 #include <QWidget>
 
 class PhotoView : public QWidget {
-    Q_OBJECT
+   Q_OBJECT
 
-  public:
-    explicit PhotoView(QString const& filePath, QWidget* parent = nullptr);
+ public:
+   explicit PhotoView(QString const& filePath, QWidget* parent = nullptr);
 
-  public slots:
+ public slots:
 
-  private slots:
+ private slots:
 
-  private:
-    SourceImageView* graphics;
-    ExtractedView* extractedView;
+ private:
+   SourceImageView* graphics;
+   ExtractedView* extractedView;
 
-    QImage image;
+   QImage image;
 
-    void showImage(QString path);
+   void showImage(QString path);
 };
 
 class DocumentWindow : public QMainWindow {
-    Q_OBJECT
+   Q_OBJECT
 
-  public:
-    explicit DocumentWindow(QMainWindow* parent = nullptr);
-    void setDocumentTitle(const QString& newTitle);
-    QString getDocumentTitle();
+ public:
+   explicit DocumentWindow(QMainWindow* parent = nullptr);
+   void setDocumentTitle(const QString& newTitle);
+   QString getDocumentTitle();
 
-  private:
-    QString documentTitle;
-    PhotoView* photoView;
+ private:
+   QString documentTitle;
+   PhotoView* photoView;
 
-  signals:
+ signals:
 };

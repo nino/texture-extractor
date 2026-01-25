@@ -6,21 +6,21 @@
 #include <QWidget>
 
 class SourceImageView : public QGraphicsView {
-    Q_OBJECT
+   Q_OBJECT
 
-  public:
-    explicit SourceImageView(QWidget* parent = nullptr);
+ public:
+   explicit SourceImageView(QWidget* parent = nullptr);
 
-  protected:
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
+ protected:
+   void mousePressEvent(QMouseEvent* event) override;
+   void mouseMoveEvent(QMouseEvent* event) override;
+   void mouseReleaseEvent(QMouseEvent* event) override;
 
-    void wheelEvent(QWheelEvent* event) override;
+   void wheelEvent(QWheelEvent* event) override;
 
-  public slots:
+ public slots:
 
-  private slots:
+ private slots:
 
-  private:
+ private:
 };

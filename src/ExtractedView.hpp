@@ -3,8 +3,8 @@
 #include <QGraphicsView>
 
 class ExtractedView : public QGraphicsView {
-    Q_OBJECT
+   Q_OBJECT
 
-  public:
-    explicit ExtractedView(QWidget* parent = nullptr);
+ public:
+   explicit ExtractedView(QWidget* parent = nullptr);
 };
