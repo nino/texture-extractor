@@ -1,0 +1,13 @@
+# clang-query script to find member expressions without explicit this->
+# Usage: clang-query -f check-explicit-this.cq <source-files> -- <compile-flags>
+
+# Match member expressions that access members through an implicit this
+match memberExpr(
+  hasObjectExpression(
+    ignoringImpCasts(
+      cxxThisExpr()
+    )
+  ),
+  unless(hasObjectExpression(materializeTemporaryExpr())),
+  unless(hasAncestor(cxxDependentScopeMemberExpr()))
+)

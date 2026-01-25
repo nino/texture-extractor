@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QGraphicsView>
 #include <QMainWindow>
@@ -23,5 +22,3 @@ class MainWindow : public QMainWindow {
 
   signals:
 };
-
-#endif // MAINWINDOW_H

@@ -1,5 +1,4 @@
-#ifndef EXTRACTEDVIEW_H
-#define EXTRACTEDVIEW_H
+#pragma once
 
 #include <QGraphicsView>
 
@@ -9,5 +8,3 @@ class ExtractedView : public QGraphicsView {
   public:
     explicit ExtractedView(QWidget* parent = nullptr);
 };
-
-#endif // EXTRACTEDVIEW_H

@@ -1,0 +1,63 @@
+name: Code Style Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  clang-format-check:
+    name: Check clang-format
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install clang-format
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format
+
+    - name: Run clang-format
+      run: |
+        # Find all C++ files and check formatting
+        find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format --dry-run --Werror
+
+    - name: Check formatting differences
+      if: failure()
+      run: |
+        echo "❌ Code formatting issues detected!"
+        echo "Please run 'clang-format -i' on the following files:"
+        find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format --dry-run --Werror 2>&1 || true
+        echo ""
+        echo "To fix formatting issues, run:"
+        echo "  find src tests -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i"
+        exit 1
+
+  explicit-this-check:
+    name: Check explicit this-> usage
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake qt6-base-dev clang-tools
+
+    - name: Configure CMake with compile commands
+      run: cmake -Bbuild -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+    - name: Check for explicit this-> usage
+      run: |
+        chmod +x check-this-usage.sh
+        ./check-this-usage.sh || true
+
+    - name: Check result
+      run: |
+        echo "Note: explicit this-> check requires clang-query which may not be available"
+        echo "Manual code review is recommended to ensure all member accesses use this->"

@@ -1,5 +1,4 @@
-#ifndef EDITABLERECTITEM_H
-#define EDITABLERECTITEM_H
+#pragma once
 
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
@@ -34,14 +33,12 @@ class EditableRectItem : public QGraphicsItem {
         WholeRectangle,
     };
 
-    static constexpr qreal handle_size = 10.0;
+    static constexpr qreal handleSize = 10.0;
     QRectF rectangle;
     qreal scale = 1.0;
-    DraggedPart currently_dragging = DraggedPart::Nothing;
+    DraggedPart currentlyDragging = DraggedPart::Nothing;
 
-    qreal scaled_handle_size() const noexcept;
+    qreal scaledHandleSize() const noexcept;
 };
 
-}; // namespace ninoan::texture_extractor
-
-#endif // EDITABLERECTITEM_H
+} // namespace ninoan::texture_extractor

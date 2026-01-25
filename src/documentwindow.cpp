@@ -1,6 +1,6 @@
-#include "documentwindow.h"
-#include "EditableRectItem.h"
-#include "ExtractedView.h"
+#include "documentwindow.hpp"
+#include "EditableRectItem.hpp"
+#include "ExtractedView.hpp"
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneDragDropEvent>
@@ -15,84 +15,84 @@ class MovableEllipse : public QGraphicsEllipseItem {
   public:
     explicit MovableEllipse(const QRectF& rect, QGraphicsItem* parent = nullptr)
         : QGraphicsEllipseItem{rect, parent} {
-        setAcceptHoverEvents(true);
-        setAcceptedMouseButtons(Qt::AllButtons);
-        setCursor(Qt::OpenHandCursor);
+        this->setAcceptHoverEvents(true);
+        this->setAcceptedMouseButtons(Qt::AllButtons);
+        this->setCursor(Qt::OpenHandCursor);
     }
 
   protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent*) override {
-        setCursor(Qt::OpenHandCursor);
+        this->setCursor(Qt::OpenHandCursor);
     }
 
     void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override {
-        setCursor(Qt::ArrowCursor);
+        this->setCursor(Qt::ArrowCursor);
     }
 
     void mousePressEvent(QGraphicsSceneMouseEvent*) override {
-        setCursor(Qt::ClosedHandCursor);
+        this->setCursor(Qt::ClosedHandCursor);
     }
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override {
-        setCursor(Qt::OpenHandCursor);
+        this->setCursor(Qt::OpenHandCursor);
     }
 
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override {
         auto origin = event->lastScenePos();
-        auto event_pos = event->scenePos();
-        setPos(this->pos() + event_pos - origin);
+        auto eventPos = event->scenePos();
+        this->setPos(this->pos() + eventPos - origin);
     }
 };
 
-PhotoView::PhotoView(QString const& file_path, QWidget* parent)
-    : QWidget{parent}, image(QImage(file_path)) {
+PhotoView::PhotoView(QString const& filePath, QWidget* parent)
+    : QWidget{parent}, image(QImage(filePath)) {
     QHBoxLayout* layout = new QHBoxLayout(this);
-    graphics = new SourceImageView(this);
-    extracted_view = new ExtractedView(this);
+    this->graphics = new SourceImageView(this);
+    this->extractedView = new ExtractedView(this);
 
-    layout->addWidget(extracted_view);
-    layout->addWidget(graphics);
+    layout->addWidget(this->extractedView);
+    layout->addWidget(this->graphics);
 
-    QGraphicsScene* scene = new QGraphicsScene(graphics);
-    graphics->setScene(scene);
+    QGraphicsScene* scene = new QGraphicsScene(this->graphics);
+    this->graphics->setScene(scene);
     auto rect = QRect(10, 10, 20, 20);
     auto ellipse = new MovableEllipse(rect, nullptr);
     scene->addItem(ellipse);
     ellipse->setZValue(1.0);
 
-    auto editable_rect = new EditableRectItem(rect, nullptr);
-    scene->addItem(editable_rect);
-    editable_rect->setZValue(2.0);
+    auto editableRect = new EditableRectItem(rect, nullptr);
+    scene->addItem(editableRect);
+    editableRect->setZValue(2.0);
 
-    setLayout(layout);
+    this->setLayout(layout);
 
-    show_image(file_path);
+    this->showImage(filePath);
 }
 
-void PhotoView::show_image(QString path) {
-    QGraphicsScene* scene = graphics->scene();
-    image = QImage(path);
-    if (!image.isNull()) {
-        QPixmap pixmap = QPixmap::fromImage(image);
+void PhotoView::showImage(QString path) {
+    QGraphicsScene* scene = this->graphics->scene();
+    this->image = QImage(path);
+    if (!this->image.isNull()) {
+        QPixmap pixmap = QPixmap::fromImage(this->image);
         QGraphicsPixmapItem* item = scene->addPixmap(pixmap);
         item->setScale(0.1);
     }
 }
 
 DocumentWindow::DocumentWindow(QMainWindow* parent) : QMainWindow{parent} {
-    setAttribute(Qt::WA_DeleteOnClose);
-    setWindowTitle("New Document");
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowTitle("New Document");
     auto loading_label = new QLabel("Loading...", this);
     this->setCentralWidget(loading_label);
 }
 
-void DocumentWindow::set_document_title(const QString& new_title) {
-    qDebug() << "The new window title is " << new_title << "\n";
-    document_title = new_title;
-    this->setWindowTitle(new_title);
-    photo_view = new PhotoView(new_title, this);
-    this->setCentralWidget(photo_view);
-    /* photo_view->show_image(new_title); */
+void DocumentWindow::setDocumentTitle(const QString& newTitle) {
+    qDebug() << "The new window title is " << newTitle << "\n";
+    this->documentTitle = newTitle;
+    this->setWindowTitle(newTitle);
+    this->photoView = new PhotoView(newTitle, this);
+    this->setCentralWidget(this->photoView);
+    /* this->photoView->showImage(newTitle); */
 }
 
-QString DocumentWindow::get_document_title() { return document_title; }
+QString DocumentWindow::getDocumentTitle() { return this->documentTitle; }
